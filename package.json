@@ -1,0 +1,27 @@
+{
+  "name": "regex-builder",
+  "version": "0.0.1",
+  "description": "A tool for testing js regular expression.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ysmood/regex-builder.git"
+  },
+  "keywords": [
+    "regex",
+    "test"
+  ],
+  "author": "Yad Smood",
+  "license": "BSD",
+  "readmeFilename": "README.md",
+  "bugs": {
+    "url": "https://github.com/ysmood/regex-builder/issues"
+  },
+  "scripts": {
+    "build": "node_modules/.bin/bower install"
+  },
+  "dependencies": {
+    "bower": "~1.2.5",
+    "coffee-script": "~1.6.3",
+    "stylus": "~0.36.1"
+  }
+}

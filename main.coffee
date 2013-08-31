@@ -2,7 +2,7 @@ $exp = $('#exp')
 $cur_exp = $('#cur_exp')
 $input = $('#input')
 $match = $('#match')
-$visual = $('#visual')
+$visual_pre = $('#visual-pre')
 $flag = $('#flag')
 
 exp = ''
@@ -63,7 +63,7 @@ delay_run_match = ->
 
 	$cur_exp.val(r)
 	m = input.match(r)
-	json = JSON.stringify(m, null, 2)
+	json = JSON.stringify(m, null, 1)
 	$match.text(json)
 
 	# Highlighting match words.
@@ -73,8 +73,8 @@ delay_run_match = ->
 		k = r.lastIndex
 		j = k - m[0].length
 		# Escaping is important.
-		visual += _.escape(input.slice(i, j)) + '<span>'
-		visual += input.slice(j, k) + '</span>'
+		visual += escape(input.slice(i, j)) + anchor()
+		visual += input.slice(j, k) + anchor()
 		i = k
 
 		# Empty match will also increase the counter.
@@ -84,7 +84,24 @@ delay_run_match = ->
 		if not r.global
 			break
 
-	visual += input.slice(i)
+	visual += escape(input.slice(i))
 
-	$visual.html(visual)
+	$visual_pre.html(visual)
 
+# Generate tag for highlighting in turns.
+anchor_c = 0
+anchor = ->
+	c = anchor_c++ % 4
+	switch c
+		when 0
+			'<i>'
+		when 1
+			'</i>'
+		when 2
+			'<b>'
+		when 3
+			'</b>'
+
+escape_reg = /[<>]/g
+escape = (str) ->
+	str.replace(escape_reg, '_')
