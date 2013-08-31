@@ -32,7 +32,7 @@ $('.switch_hide').click(->
 	$this = $(this)
 	$tar = $('#' + $this.attr('target'))
 
-	if $this.attr('checked')
+	if $this.prop('checked')
 		$tar.hide()
 	else
 		$tar.show()

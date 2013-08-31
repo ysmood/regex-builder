@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title></title>
+	<title>Regex Builder</title>
+	<link rel="shortcut icon" href="favicon.ico" />
 	<link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
 	<link rel="stylesheet" href="main.css">
 </head>
@@ -9,12 +10,17 @@
 
 <div id='main' class='form-inline'>
 	<div class="group">
+		<div class="h4 text-center">
+			<a href="https://github.com/ysmood/regex-builder" target="_bland">Regex Builder</a>
+		</div>
+	</div>
+
+	<div class="group">
 		<label for="exp">Regex</label>
 		<input id='exp' class='form-control' type="text" placeholder='Regex here...'>
 		<label for="flag">Flag</label>
 		<input id='flag' class='form-control' type="text" maxlength=4
 			value='g' title='Set flags here: g, i, m, y'
-			data-placement="left"
 		>
 	</div>
 
@@ -45,6 +51,12 @@
 		<div id='match'></div>
 	</div>
 </div>
+
+<footer>
+	<div class="group text-center grey">
+		Sep 2013 ys
+	</div>
+</footer>
 
 <script type="text/javascript" src="bower_components/jquery/jquery.min.js"></script>
 <script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
