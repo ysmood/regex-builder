@@ -5,24 +5,27 @@ $match = $('#match')
 $visual_pre = $('#visual-pre')
 $flag = $('#flag')
 
-exp = ''
-flag = $flag.val()
-input = ''
+init = ->
+	# Edit change
+	$input.keyup(run_match)
+	$exp.keyup(run_match)
+	$flag.keyup(run_match)
 
-$input.keyup(->
-	input = $input.val()
-	run_match()
-)
+	# Load data.
+	$('[save]').each(->
+		$this = $(this)
+		v = localStorage.getItem(
+			$this.attr('id')
+		)
+		if v
+			$this.val(v)
 
-$exp.keyup(->
-	exp = $exp.val()
-	run_match()
-)
+	)
+	delay_run_match()
 
-$flag.keyup(->
-	flag = $flag.val()
-	run_match()
-)
+	# Init tooltips.
+	$('[title]').tooltip()
+
 
 delay = $('#exe_delay').change(->
 	delay = $(this).val()
@@ -38,9 +41,6 @@ $('.switch_hide').click(->
 		$tar.show()
 )
 
-$('[title]').tooltip()
-
-
 delay_id = null
 run_match = ->
 	clearTimeout(delay_id)
@@ -49,7 +49,30 @@ run_match = ->
 		delay
 	)
 
+# Generate tag for highlighting in turns.
+anchor_c = 0
+anchor = ->
+	c = anchor_c++ % 4
+	switch c
+		when 0
+			'<i>'
+		when 1
+			'</i>'
+		when 2
+			'<b>'
+		when 3
+			'</b>'
+
+# Escape html.
+escape_reg = /[<>]/g
+escape = (str) ->
+	str.replace(escape_reg, '_')
+
 delay_run_match = ->
+	exp = $exp.val()
+	flag = $flag.val()
+	input = $input.val()
+
 	if not exp
 		$match.text('')
 		$cur_exp.val('')
@@ -62,6 +85,7 @@ delay_run_match = ->
 		return
 
 	$cur_exp.val(r)
+
 	m = input.match(r)
 	json = JSON.stringify(m, null, 1)
 	$match.text(json)
@@ -88,20 +112,16 @@ delay_run_match = ->
 
 	$visual_pre.html(visual)
 
-# Generate tag for highlighting in turns.
-anchor_c = 0
-anchor = ->
-	c = anchor_c++ % 4
-	switch c
-		when 0
-			'<i>'
-		when 1
-			'</i>'
-		when 2
-			'<b>'
-		when 3
-			'</b>'
+# Save data.
+window.onbeforeunload = ->
+	$('[save]').each(->
+		$this = $(this)
+		localStorage.setItem(
+			$this.attr('id'),
+			$this.val()
+		)
+	)
+	return null
 
-escape_reg = /[<>]/g
-escape = (str) ->
-	str.replace(escape_reg, '_')
+
+init()
