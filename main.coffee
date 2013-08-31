@@ -66,23 +66,25 @@ delay_run_match = ->
 	json = JSON.stringify(m, null, 2)
 	$match.text(json)
 
+	# Highlighting match words.
+	visual = ''
+	i = 0
+	while (m = r.exec(input)) != null
+		k = r.lastIndex
+		j = k - m[0].length
+		# Escaping is important.
+		visual += _.escape(input.slice(i, j)) + '<span>'
+		visual += input.slice(j, k) + '</span>'
+		i = k
 
-	visual = input.replace(r, (str) ->
-		return "<span>#{str}</span>"
-	)
+		# Empty match will also increase the counter.
+		if m[0].length == 0
+			r.lastIndex++
+
+		if not r.global
+			break
+
+	visual += input.slice(i)
+
 	$visual.html(visual)
-
-	# # Highlighting match words.
-	# visual = ''
-	# i = 0
-	# while (m = r.exec(input)) != null
-	# 	k = r.lastIndex
-	# 	j = k - m[0].length
-	# 	visual += input.slice(i, j) + '<span>'
-	# 	visual += input.slice(j, k) + '</span>'
-	# 	i = k
-	# 	if not r.global
-	# 		break
-	# visual += input.slice(i)
-	# $visual.html(visual)
 
