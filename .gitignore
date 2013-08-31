@@ -1,0 +1,9 @@
+# Libs
+node_modules
+bower_components
+
+# Coffeescript Project
+*.js
+
+# Stylus Project
+*.css

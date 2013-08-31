@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="main.css">
+
+<div id='main' class='form-inline'>
+	<div class="group">
+		<label for="exp">Regex</label>
+		<input id='exp' class='form-control' type="text" placeholder='Regex here...'>
+		<label for="flag">Flag</label>
+		<input id='flag' class='form-control' type="text" maxlength=4
+			value='g' title='Set flags here: g, i, m, y'
+			data-placement="left"
+		>
+	</div>
+
+	<div class="group">
+		<label class='grey' title='Simply for you to copy'>Regex</label>
+		<input id='cur_exp' class="form-control" onClick="this.select();" readonly  title='Simply for you to copy'>
+
+		<label>Delay</label>
+		<input type="number" id="exe_delay" class="form-control" min=0 value="300" title="Execution delay">
+	</div>
+
+	<div class="group">
+		<label for='input'>Input</label>
+		<label class="pull-right">
+			<input type="checkbox" class="switch_hide" target="input"> Hide
+		</label>
+		<textarea id='input' class='form-control' placeholder='Input text here...'></textarea>
+	</div>
+
+	<div class="group">
+		<label for='visual' title='Matched words are highlighted'>Visual</label>
+		<label class="pull-right">
+			<input type="checkbox" class="switch_hide" target="visual"> Hide
+		</label>
+		<div id='visual'></div>
+	</div>
+
+	<div class="group">
+		<label for='match' title='Result is json formated'>Match</label>
+		<label class="pull-right">
+			<input type="checkbox" class="switch_hide" target="match"> Hide
+		</label>
+		<div id='match'></div>
+	</div>
+</div>
+
+<script class="cssdeck" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+<script src="main.js"></script>
+
+</body>
+</html>
