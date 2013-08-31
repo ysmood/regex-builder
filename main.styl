@@ -16,25 +16,20 @@ label
 	border-bottom 1px dashed #aaa
 
 #exp, #cur_exp, #flag,#match,
-#visual, #visual-pre, #input
+#visual-pre, #input
 	font-size 14px
 	font-family Menlo, "Consolas", monospace
-
-#exp
-	width calc(100% \- 220px)
 
 #flag
 	width 100px
 
 #cur_exp
-	color #4C9CDB
-	width calc(100% \- 220px)
-	cursor pointer
+	display inline-block
 
 #exe_delay
 	width 100px
 
-#match, #visual
+#match
 	background #fff
 	border-radius 3px
 	box-shadow 0 1px 3px #aaa
@@ -43,30 +38,16 @@ label
 	min-height 200px
 	padding 10px
 
-#visual
-	height 400px
-	position relative
-	overflow auto
-	padding 0
-
-#visual-pre,
 #input
-	resize none
-	position absolute
-	width 100%
-	height 100%
-	margin 0
-	padding 10px
-	border none
-	background none
+	min-height 200px
 
 #visual-pre
+	min-height 200px
 	background #fff
-	color #fff
-	color rgba(0, 0, 0, 0)
 	i, b
 		border-radius 4px
 		font-style normal
+		font-weight normal
 	i
 		box-shadow 0 0 0 1px #0099FF
 	b

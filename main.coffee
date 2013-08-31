@@ -64,9 +64,19 @@ anchor = ->
 			'</b>'
 
 # Escape html.
-escape_reg = /[<>]/g
-escape = (str) ->
-	str.replace(escape_reg, '_')
+entityMap = {
+	"&": "&amp;"
+	"<": "&lt;"
+	">": "&gt;"
+}
+escape_exp = /[&<>]/g
+escape_html = (str) ->
+	return String(str).replace(
+		escape_exp,
+		(s) ->
+			return entityMap[s]
+	)
+
 
 delay_run_match = ->
 	exp = $exp.val()
@@ -75,7 +85,7 @@ delay_run_match = ->
 
 	if not exp
 		$match.text('')
-		$cur_exp.val('')
+		$cur_exp.html('')
 		return
 
 	try
@@ -84,7 +94,9 @@ delay_run_match = ->
 		$match.text(e)
 		return
 
-	$cur_exp.val(r)
+	$cur_exp.html(
+		RegexColorizer.colorizeText(r.toString())
+	)
 
 	m = input.match(r)
 	json = JSON.stringify(m, null, 1)
@@ -97,7 +109,7 @@ delay_run_match = ->
 		k = r.lastIndex
 		j = k - m[0].length
 		# Escaping is important.
-		visual += escape(input.slice(i, j)) + anchor()
+		visual += escape_html(input.slice(i, j)) + anchor()
 		visual += input.slice(j, k) + anchor()
 		i = k
 
@@ -108,7 +120,7 @@ delay_run_match = ->
 		if not r.global
 			break
 
-	visual += escape(input.slice(i))
+	visual += escape_html(input.slice(i))
 
 	$visual_pre.html(visual)
 
