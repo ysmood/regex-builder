@@ -18,36 +18,28 @@
 
 	<div class="group">
 		<label for="exp">Regex</label>
-		<input id='exp' save class='form-control' type="text" placeholder='Regex here...'>
+		<input id='exp' save='val' class='form-control' type="text" placeholder='Regex here...'>
 	</div>
 
 	<div class="group">
 		<label for="flag">Flag</label>
-		<input id='flag' save class='form-control' type="text" maxlength=4
+		<input id='flag' save='val' class='form-control' type="text" maxlength=4
 			value='g' title='Set flags here: g, i, m, y'
 		>
 
 		<label>Delay</label>
-		<input type="number" id="exe_delay" save class="form-control" min=0 value="300" title="Execution delay">
+		<input type="number" id="exe_delay" save='val' class="form-control" min=0 value="300" title="Execution delay">
 
 		<label class='grey'>Regex: </label>
 		<div id='cur_exp' class='regex' title='Simply for you to copy'></div>
 	</div>
 
 	<div class="group">
-		<label for='input' title='Matched words are highlighted'>Input</label>
+		<label for='visual' title='Matched words are highlighted'>Visual</label>
 		<label class="pull-right">
 			<input type="checkbox" class="switch_hide" target="input"> Hide
 		</label>
-		<textarea id='input' save spellcheck="false" class='form-control'></textarea>
-	</div>
-
-	<div class="group">
-		<label for='visual' title='Matched words are highlighted'>Visual</label>
-		<label class="pull-right">
-			<input type="checkbox" class="switch_hide" target="visual-pre"> Hide
-		</label>
-		<pre id='visual-pre'></pre>
+		<pre id='input' save='text' contenteditable="true"></pre>
 	</div>
 
 	<div class="group">

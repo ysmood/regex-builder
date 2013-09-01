@@ -19,7 +19,6 @@ label {
 #cur_exp,
 #flag,
 #match,
-#visual-pre,
 #input {
   font-size: 14px;
   font-family: Menlo, "Consolas", monospace;
@@ -33,31 +32,30 @@ label {
 #exe_delay {
   width: 100px;
 }
-#match {
+#match,
+#input {
   background: #fff;
   border-radius: 3px;
-  box-shadow: 0 1px 3px #aaa;
 }
 #match {
   min-height: 200px;
   padding: 10px;
+  box-shadow: 0 1px 3px #aaa;
 }
 #input {
   min-height: 200px;
+  box-shadow: 0 1px 3px #aaa inset;
+  padding: 10px;
 }
-#visual-pre {
-  min-height: 200px;
-  background: #fff;
-}
-#visual-pre i,
-#visual-pre b {
+#input i,
+#input b {
   border-radius: 4px;
   font-style: normal;
   font-weight: normal;
 }
-#visual-pre i {
+#input i {
   box-shadow: 0 0 0 1px #09f;
 }
-#visual-pre b {
+#input b {
   box-shadow: 0 0 0 1px #df56ad;
 }
