@@ -98,7 +98,7 @@ select_all_text = function(containerid) {
 };
 
 run_match = function() {
-  var count, cur_exp, e, exp, flag, i, input, j, k, list, m, r, visual;
+  var count, cur_exp, e, exp, flag, i, input, j, json, k, list, m, ms, r, visual;
   exp = $exp.val();
   flag = $flag.val();
   input = $input.val();
@@ -118,15 +118,13 @@ run_match = function() {
   cur_exp = cur_exp.replace(/\\\//g, '/').replace(/\//g, '\\/');
   cur_exp = RegexColorizer.colorizeText(cur_exp);
   $cur_exp.html('/' + cur_exp + '/' + flag);
-  m = input.match(r);
-  list = create_match_list(m);
-  list += "<pre>" + (JSON.stringify(m)) + "</pre>";
-  $match.html(list);
+  ms = [];
   visual = '';
   count = 0;
   if (r.global) {
     i = 0;
     while ((m = r.exec(input)) !== null) {
+      ms.push(m[0]);
       k = r.lastIndex;
       j = k - m[0].length;
       visual += escape_html(input.slice(i, j)) + anchor(count++);
@@ -139,13 +137,18 @@ run_match = function() {
     visual += escape_html(input.slice(i));
   } else {
     visual = input.replace(r, function(m) {
+      ms.push(m);
       return m = anchor(count) + m + anchor();
     });
   }
   $visual_pre.empty().html(visual);
-  return $visual_pre.find('[index]').hover(match_elem_show_tip, function() {
+  $visual_pre.find('[index]').hover(match_elem_show_tip, function() {
     return $(this).popover('destroy');
   });
+  list = create_match_list(ms);
+  json = JSON.stringify(ms);
+  list += "<pre>" + json + "</pre>";
+  return $match.html(list);
 };
 
 create_match_list = function(m) {
