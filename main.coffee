@@ -55,15 +55,15 @@ delay_run_match = ->
 
 # Generate tag for highlighting in turns.
 anchor_c = 0
-anchor = (title) ->
+anchor = (index) ->
 	c = anchor_c++ % 4
 	switch c
 		when 0
-			"<i title='#{title}'>"
+			"<i index='#{index}'>"
 		when 1
 			"</i>"
 		when 2
-			"<b title='#{title}'>"
+			"<b index='#{index}'>"
 		when 3
 			"</b>"
 
@@ -113,15 +113,10 @@ run_match = ->
 	cur_exp = RegexColorizer.colorizeText(cur_exp)
 	$cur_exp.html('/' + cur_exp + '/' + flag)
 
-	# Show the match object as json string.
 	m = input.match(r)
-	list = '<ol start="0">'
-	if m
-		for i in m
-			list += "<li>#{i}</li>"
-	list += '</ol>'
-	$match.html(list)
-	$match.append("JSON: <pre>#{JSON.stringify(m)}</pre>")
+
+	# Show the match object as json string.
+	$match.html(create_match_list(m))
 
 	# Highlighting match words.
 	visual = ''
@@ -146,7 +141,34 @@ run_match = ->
 		)
 
 	$visual_pre.empty().html(visual)
-	$visual_pre.find('[title]').tooltip()
+	$visual_pre.find('[index]').hover(
+		match_elem_show_tip
+		->
+			$(this).popover('destroy')
+	)
+
+create_match_list = (m) ->
+	list = '<ol start="0">'
+	if m
+		for i in m
+			list += "<li>#{i}</li>"
+	list += '</ol>'
+	list += "<pre>#{JSON.stringify(m)}</pre>"
+	list
+
+match_elem_show_tip = ->
+	$this = $(this)
+
+	# Create match list.
+	reg = new RegExp($exp.val(), $flag.val().replace('g', ''))
+	m = $this.text().match(reg)
+
+	$this.popover({
+		html: true
+		content: create_match_list(m)
+		placement: 'bottom'
+	}).popover('show')
+
 
 # Save data.
 window.onbeforeunload = ->
