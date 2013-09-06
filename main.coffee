@@ -113,12 +113,8 @@ run_match = ->
 	cur_exp = RegexColorizer.colorizeText(cur_exp)
 	$cur_exp.html('/' + cur_exp + '/' + flag)
 
-	m = input.match(r)
-
-	# Show the match object as json string.
-	list = create_match_list(m)
-	list += "<pre>#{JSON.stringify(m)}</pre>"
-	$match.html(list)
+	# Store the match groups
+	ms = []
 
 	# Highlighting match words.
 	visual = ''
@@ -126,6 +122,7 @@ run_match = ->
 	if r.global
 		i = 0
 		while (m = r.exec(input)) != null
+			ms.push m[0]
 			k = r.lastIndex
 			j = k - m[0].length
 			# Escaping is important.
@@ -139,6 +136,7 @@ run_match = ->
 		visual += escape_html(input.slice(i))
 	else
 		visual = input.replace(r, (m) ->
+			ms.push m
 			m = anchor(count) + m + anchor()
 		)
 
@@ -148,6 +146,12 @@ run_match = ->
 		->
 			$(this).popover('destroy')
 	)
+
+	# Show the match object as json string.
+	list = create_match_list(ms)
+	json = JSON.stringify(ms)
+	list += "<pre>#{json}</pre>"
+	$match.html(list)
 
 create_match_list = (m) ->
 	list = '<ol start="0">'
