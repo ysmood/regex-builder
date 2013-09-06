@@ -2,6 +2,15 @@
 
 A tool for testing js regular expression.
 
+# Features
+
+ - Subgroups display while global matching.
+ - High performance.
+ - Works even when offline.
+ - Tidy andy compact UI layout.
+ - Regular expression syntax highlighting.
+ - Easy to copy the result express.
+
 # Build & Control
 
 ### Requirement
@@ -11,7 +20,7 @@ A tool for testing js regular expression.
 ### Build
 
   0. Install the node dependencies: `npm install`
-  0. Install the node dependencies: `npm run-script build`
+  0. Compile scripts: `npm run-script build`
 
 # License
 
