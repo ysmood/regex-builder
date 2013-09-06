@@ -98,7 +98,7 @@ select_all_text = function(containerid) {
 };
 
 run_match = function() {
-  var count, cur_exp, e, exp, flag, i, input, j, k, m, r, visual;
+  var count, cur_exp, e, exp, flag, i, input, j, k, list, m, r, visual;
   exp = $exp.val();
   flag = $flag.val();
   input = $input.val();
@@ -119,7 +119,9 @@ run_match = function() {
   cur_exp = RegexColorizer.colorizeText(cur_exp);
   $cur_exp.html('/' + cur_exp + '/' + flag);
   m = input.match(r);
-  $match.html(create_match_list(m));
+  list = create_match_list(m);
+  list += "<pre>" + (JSON.stringify(m)) + "</pre>";
+  $match.html(list);
   visual = '';
   count = 0;
   if (r.global) {
@@ -137,7 +139,7 @@ run_match = function() {
     visual += escape_html(input.slice(i));
   } else {
     visual = input.replace(r, function(m) {
-      return m = anchor() + m + anchor();
+      return m = anchor(count) + m + anchor();
     });
   }
   $visual_pre.empty().html(visual);
@@ -156,17 +158,18 @@ create_match_list = function(m) {
     }
   }
   list += '</ol>';
-  list += "<pre>" + (JSON.stringify(m)) + "</pre>";
   return list;
 };
 
 match_elem_show_tip = function() {
-  var $this, m, reg;
+  var $this, index, m, reg;
   $this = $(this);
+  index = $this.attr('index');
   reg = new RegExp($exp.val(), $flag.val().replace('g', ''));
   m = $this.text().match(reg);
   return $this.popover({
     html: true,
+    title: 'Group: ' + index,
     content: create_match_list(m),
     placement: 'bottom'
   }).popover('show');

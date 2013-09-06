@@ -116,7 +116,9 @@ run_match = ->
 	m = input.match(r)
 
 	# Show the match object as json string.
-	$match.html(create_match_list(m))
+	list = create_match_list(m)
+	list += "<pre>#{JSON.stringify(m)}</pre>"
+	$match.html(list)
 
 	# Highlighting match words.
 	visual = ''
@@ -137,7 +139,7 @@ run_match = ->
 		visual += escape_html(input.slice(i))
 	else
 		visual = input.replace(r, (m) ->
-			m = anchor() + m + anchor()
+			m = anchor(count) + m + anchor()
 		)
 
 	$visual_pre.empty().html(visual)
@@ -153,11 +155,12 @@ create_match_list = (m) ->
 		for i in m
 			list += "<li>#{i}</li>"
 	list += '</ol>'
-	list += "<pre>#{JSON.stringify(m)}</pre>"
 	list
 
 match_elem_show_tip = ->
 	$this = $(this)
+
+	index = $this.attr('index')
 
 	# Create match list.
 	reg = new RegExp($exp.val(), $flag.val().replace('g', ''))
@@ -165,6 +168,7 @@ match_elem_show_tip = ->
 
 	$this.popover({
 		html: true
+		title: 'Group: ' + index
 		content: create_match_list(m)
 		placement: 'bottom'
 	}).popover('show')
