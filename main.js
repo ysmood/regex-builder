@@ -98,7 +98,7 @@ select_all_text = function(containerid) {
 };
 
 run_match = function() {
-  var e, exp, flag, i, input, j, json, k, m, r, visual;
+  var cur_exp, e, exp, flag, i, input, j, json, k, m, r, visual;
   exp = $exp.val();
   flag = $flag.val();
   input = $input.val();
@@ -114,7 +114,10 @@ run_match = function() {
     $match.text(e);
     return;
   }
-  $cur_exp.html(RegexColorizer.colorizeText(r.toString()));
+  cur_exp = r.source;
+  cur_exp = cur_exp.replace(/\\\//g, '/').replace(/\//g, '\\/');
+  cur_exp = RegexColorizer.colorizeText(cur_exp);
+  $cur_exp.html('/' + cur_exp + '/' + flag);
   m = input.match(r);
   json = JSON.stringify(m, null, 1);
   $match.text(json);

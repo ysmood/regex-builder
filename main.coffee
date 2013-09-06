@@ -107,9 +107,11 @@ run_match = ->
 		$match.text(e)
 		return
 
-	$cur_exp.html(
-		RegexColorizer.colorizeText(r.toString())
-	)
+	# Auto format the expression and syntax highlight it.
+	cur_exp = r.source
+	cur_exp = cur_exp.replace(/\\\//g, '/').replace(/\//g, '\\/')
+	cur_exp = RegexColorizer.colorizeText(cur_exp)
+	$cur_exp.html('/' + cur_exp + '/' + flag)
 
 	m = input.match(r)
 	json = JSON.stringify(m, null, 1)
