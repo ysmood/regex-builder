@@ -55,17 +55,17 @@ delay_run_match = ->
 
 # Generate tag for highlighting in turns.
 anchor_c = 0
-anchor = ->
+anchor = (title) ->
 	c = anchor_c++ % 4
 	switch c
 		when 0
-			'<i>'
+			"<i title='#{title}'>"
 		when 1
-			'</i>'
+			"</i>"
 		when 2
-			'<b>'
+			"<b title='#{title}'>"
 		when 3
-			'</b>'
+			"</b>"
 
 # Escape html.
 entityMap = {
@@ -113,19 +113,26 @@ run_match = ->
 	cur_exp = RegexColorizer.colorizeText(cur_exp)
 	$cur_exp.html('/' + cur_exp + '/' + flag)
 
+	# Show the match object as json string.
 	m = input.match(r)
-	json = JSON.stringify(m, null, 1)
-	$match.text(json)
+	list = '<ol start="0">'
+	if m
+		for i in m
+			list += "<li>#{i}</li>"
+	list += '</ol>'
+	$match.html(list)
+	$match.append("JSON: <pre>#{JSON.stringify(m)}</pre>")
 
 	# Highlighting match words.
 	visual = ''
+	count = 0
 	if r.global
 		i = 0
 		while (m = r.exec(input)) != null
 			k = r.lastIndex
 			j = k - m[0].length
 			# Escaping is important.
-			visual += escape_html(input.slice(i, j)) + anchor()
+			visual += escape_html(input.slice(i, j)) + anchor(count++)
 			visual += input.slice(j, k) + anchor()
 			i = k
 
@@ -138,7 +145,8 @@ run_match = ->
 			m = anchor() + m + anchor()
 		)
 
-	$visual_pre.html(visual)
+	$visual_pre.empty().html(visual)
+	$visual_pre.find('[title]').tooltip()
 
 # Save data.
 window.onbeforeunload = ->

@@ -55,18 +55,18 @@ delay_run_match = function() {
 
 anchor_c = 0;
 
-anchor = function() {
+anchor = function(title) {
   var c;
   c = anchor_c++ % 4;
   switch (c) {
     case 0:
-      return '<i>';
+      return "<i title='" + title + "'>";
     case 1:
-      return '</i>';
+      return "</i>";
     case 2:
-      return '<b>';
+      return "<b title='" + title + "'>";
     case 3:
-      return '</b>';
+      return "</b>";
   }
 };
 
@@ -98,7 +98,7 @@ select_all_text = function(containerid) {
 };
 
 run_match = function() {
-  var cur_exp, e, exp, flag, i, input, j, json, k, m, r, visual;
+  var count, cur_exp, e, exp, flag, i, input, j, k, list, m, r, visual, _i, _len;
   exp = $exp.val();
   flag = $flag.val();
   input = $input.val();
@@ -119,15 +119,24 @@ run_match = function() {
   cur_exp = RegexColorizer.colorizeText(cur_exp);
   $cur_exp.html('/' + cur_exp + '/' + flag);
   m = input.match(r);
-  json = JSON.stringify(m, null, 1);
-  $match.text(json);
+  list = '<ol start="0">';
+  if (m) {
+    for (_i = 0, _len = m.length; _i < _len; _i++) {
+      i = m[_i];
+      list += "<li>" + i + "</li>";
+    }
+  }
+  list += '</ol>';
+  $match.html(list);
+  $match.append("JSON: <pre>" + (JSON.stringify(m)) + "</pre>");
   visual = '';
+  count = 0;
   if (r.global) {
     i = 0;
     while ((m = r.exec(input)) !== null) {
       k = r.lastIndex;
       j = k - m[0].length;
-      visual += escape_html(input.slice(i, j)) + anchor();
+      visual += escape_html(input.slice(i, j)) + anchor(count++);
       visual += input.slice(j, k) + anchor();
       i = k;
       if (m[0].length === 0) {
@@ -140,7 +149,8 @@ run_match = function() {
       return m = anchor() + m + anchor();
     });
   }
-  return $visual_pre.html(visual);
+  $visual_pre.empty().html(visual);
+  return $visual_pre.find('[title]').tooltip();
 };
 
 window.onbeforeunload = function() {
