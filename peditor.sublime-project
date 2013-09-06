@@ -1,0 +1,23 @@
+{
+	"folders":
+	[
+		{
+			"file_exclude_patterns":
+			[
+				"peditor.sublime-project",
+				"*.ico",
+				"*.js",
+				"*.css"
+			],
+			"folder_exclude_patterns":
+			[
+				"js",
+				"css",
+				"bower_components",
+				"node_modules"
+			],
+			"follow_symlinks": true,
+			"path": "./"
+		}
+	]
+}

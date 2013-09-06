@@ -16,22 +16,24 @@
 		</div>
 	</div>
 
-	<div class="group">
-		<label for="exp">Regex</label>
-		<input id='exp' save class='form-control' type="text" placeholder='Regex here...'>
-	</div>
-
-	<div class="group">
-		<label for="flag">Flag</label>
-		<input id='flag' save class='form-control' type="text" maxlength=4
-			value='g' title='Set flags here: g, i, m, y'
-		>
-
-		<label>Delay</label>
-		<input type="number" id="exe_delay" save class="form-control" min=0 value="300" title="Execution delay">
-
-		<label class='grey'>Regex: </label>
-		<div id='cur_exp' class='regex' title='Simply for you to copy'></div>
+	<div class="affix">
+		<div class="row">
+			<div class="col-xs-8">
+				<label for="exp">Regex:</label>
+				<div id='cur_exp' class='regex' title='Simply for you to copy'></div>
+				<input id='exp' save class='form-control' type="text" placeholder='Regex here...'>
+			</div>
+			<div class="col-xs-2">
+				<label for="flag">Flag</label>
+				<input id='flag' save class='form-control' type="text" maxlength=4
+					value='g' title='Set flags here: g, i, m, y'
+				>
+			</div>
+			<div class="col-xs-2">
+				<label>Delay</label>
+				<input type="number" id="exe_delay" save class="form-control" min=0 value="300" title="Execution delay">
+			</div>
+		</div>
 	</div>
 
 	<div class="group">

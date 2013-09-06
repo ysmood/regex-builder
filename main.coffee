@@ -23,8 +23,12 @@ init = ->
 	)
 	delay_run_match()
 
+	$cur_exp.click(select_all_text)
+
 	# Init tooltips.
 	$('[title]').tooltip()
+
+	$exp.select()
 
 
 delay = $('#exe_delay').change(->
@@ -77,6 +81,15 @@ escape_html = (str) ->
 			return entityMap[s]
 	)
 
+select_all_text = (containerid) ->
+	if document.selection
+		range = document.body.createTextRange()
+		range.moveToElementText(this)
+		range.select()
+	else if window.getSelection
+		range = document.createRange()
+		range.selectNode(this)
+		window.getSelection().addRange(range)
 
 delay_run_match = ->
 	exp = $exp.val()
