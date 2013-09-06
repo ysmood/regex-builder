@@ -14,9 +14,9 @@ $visual_pre = $('#visual-pre');
 $flag = $('#flag');
 
 init = function() {
-  $input.keyup(run_match);
-  $exp.keyup(run_match);
-  $flag.keyup(run_match);
+  $input.keyup(delay_run_match);
+  $exp.keyup(delay_run_match);
+  $flag.keyup(delay_run_match);
   $('[save]').each(function() {
     var $this, v;
     $this = $(this);
@@ -25,7 +25,7 @@ init = function() {
       return $this.val(v);
     }
   });
-  delay_run_match();
+  run_match();
   $cur_exp.click(select_all_text);
   $('[title]').tooltip();
   return $exp.select();
@@ -48,9 +48,9 @@ $('.switch_hide').click(function() {
 
 delay_id = null;
 
-run_match = function() {
+delay_run_match = function() {
   clearTimeout(delay_id);
-  return delay_id = setTimeout(delay_run_match, delay);
+  return delay_id = setTimeout(run_match, delay);
 };
 
 anchor_c = 0;
@@ -97,7 +97,7 @@ select_all_text = function(containerid) {
   }
 };
 
-delay_run_match = function() {
+run_match = function() {
   var e, exp, flag, i, input, j, json, k, m, r, visual;
   exp = $exp.val();
   flag = $flag.val();
@@ -119,21 +119,24 @@ delay_run_match = function() {
   json = JSON.stringify(m, null, 1);
   $match.text(json);
   visual = '';
-  i = 0;
-  while ((m = r.exec(input)) !== null) {
-    k = r.lastIndex;
-    j = k - m[0].length;
-    visual += escape_html(input.slice(i, j)) + anchor();
-    visual += input.slice(j, k) + anchor();
-    i = k;
-    if (m[0].length === 0) {
-      r.lastIndex++;
+  if (r.global) {
+    i = 0;
+    while ((m = r.exec(input)) !== null) {
+      k = r.lastIndex;
+      j = k - m[0].length;
+      visual += escape_html(input.slice(i, j)) + anchor();
+      visual += input.slice(j, k) + anchor();
+      i = k;
+      if (m[0].length === 0) {
+        r.lastIndex++;
+      }
     }
-    if (!r.global) {
-      break;
-    }
+    visual += escape_html(input.slice(i));
+  } else {
+    visual = input.replace(r, function(m) {
+      return m = anchor() + m + anchor();
+    });
   }
-  visual += escape_html(input.slice(i));
   return $visual_pre.html(visual);
 };
 

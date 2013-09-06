@@ -7,9 +7,9 @@ $flag = $('#flag')
 
 init = ->
 	# Edit change
-	$input.keyup(run_match)
-	$exp.keyup(run_match)
-	$flag.keyup(run_match)
+	$input.keyup(delay_run_match)
+	$exp.keyup(delay_run_match)
+	$flag.keyup(delay_run_match)
 
 	# Load data.
 	$('[save]').each(->
@@ -21,7 +21,7 @@ init = ->
 			$this.val(v)
 
 	)
-	delay_run_match()
+	run_match()
 
 	$cur_exp.click(select_all_text)
 
@@ -46,10 +46,10 @@ $('.switch_hide').click(->
 )
 
 delay_id = null
-run_match = ->
+delay_run_match = ->
 	clearTimeout(delay_id)
 	delay_id = setTimeout(
-		delay_run_match,
+		run_match,
 		delay
 	)
 
@@ -91,7 +91,7 @@ select_all_text = (containerid) ->
 		range.selectNode(this)
 		window.getSelection().addRange(range)
 
-delay_run_match = ->
+run_match = ->
 	exp = $exp.val()
 	flag = $flag.val()
 	input = $input.val()
@@ -117,23 +117,24 @@ delay_run_match = ->
 
 	# Highlighting match words.
 	visual = ''
-	i = 0
-	while (m = r.exec(input)) != null
-		k = r.lastIndex
-		j = k - m[0].length
-		# Escaping is important.
-		visual += escape_html(input.slice(i, j)) + anchor()
-		visual += input.slice(j, k) + anchor()
-		i = k
+	if r.global
+		i = 0
+		while (m = r.exec(input)) != null
+			k = r.lastIndex
+			j = k - m[0].length
+			# Escaping is important.
+			visual += escape_html(input.slice(i, j)) + anchor()
+			visual += input.slice(j, k) + anchor()
+			i = k
 
-		# Empty match will also increase the counter.
-		if m[0].length == 0
-			r.lastIndex++
-
-		if not r.global
-			break
-
-	visual += escape_html(input.slice(i))
+			# Empty match will also increase the counter.
+			if m[0].length == 0
+				r.lastIndex++
+		visual += escape_html(input.slice(i))
+	else
+		visual = input.replace(r, (m) ->
+			m = anchor() + m + anchor()
+		)
 
 	$visual_pre.html(visual)
 
