@@ -21,7 +21,7 @@ init = function() {
     var $this, v;
     $this = $(this);
     v = localStorage.getItem($this.attr('id'));
-    if (v) {
+    if (v !== null) {
       return $this.val(v);
     }
   });

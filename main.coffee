@@ -17,7 +17,7 @@ init = ->
 		v = localStorage.getItem(
 			$this.attr('id')
 		)
-		if v
+		if v != null
 			$this.val(v)
 
 	)
