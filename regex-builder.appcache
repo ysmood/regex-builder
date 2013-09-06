@@ -1,0 +1,10 @@
+CACHE MANIFEST
+# v0.0.1
+index.html
+main.js
+main.css
+bower_components/bootstrap/dist/css/bootstrap.min.css
+regex-colorizer/nobg.css
+bower_components/jquery/jquery.min.js
+bower_components/bootstrap/dist/js/bootstrap.min.js
+regex-colorizer/regex-colorizer.js
