@@ -1,19 +1,30 @@
+.grey {
+  color: #999;
+}
 body {
   background-color: #eee;
   padding-bottom: 500px;
 }
+.brand h1 {
+  margin: 0;
+  font-weight: 100;
+}
+.brand a {
+  color: #555;
+}
 .group {
   padding: 10px 20px;
-  border-top: 1px dashed #fff;
-  border-bottom: 1px dashed #aaa;
+  border-top: 1px solid #fff;
+  border-bottom: 1px solid #ccc;
 }
 .affix {
-  position: fixed;
-  bottom: 0;
+  top: 0;
+}
+.affix-group {
   width: 100%;
-  background: #eee;
-  box-shadow: 0 -1px 5px #aaa;
   padding: 15px;
+  background: #eee;
+  box-shadow: 0 1px 5px #aaa;
 }
 #exp,
 #exp_dsp,
@@ -39,7 +50,6 @@ body {
   display: inline-block;
   cursor: pointer;
   white-space: pre-wrap;
-  color: #999;
 }
 #exp_dsp .error {
   color: #f13f86;
@@ -72,8 +82,10 @@ body {
   font-weight: normal;
 }
 #txt i {
+  background: #cff5ff;
   box-shadow: 0 0 0 1px #09f;
 }
 #txt b {
+  background: #ffdfff;
   box-shadow: 0 0 0 1px #df56ad;
 }
