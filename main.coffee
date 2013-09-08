@@ -167,9 +167,7 @@ run_match = ->
 			ms.push m[0]
 			k = r.lastIndex
 			j = k - m[0].length
-			# Escaping is important.
-			visual += escape_html(txt.slice(i, j)) + anchor(count++)
-			visual += txt.slice(j, k) + anchor()
+			visual += match_visual(txt, i, j, k, count)
 			i = k
 
 			# Empty match will also increase the counter.
@@ -177,10 +175,17 @@ run_match = ->
 				r.lastIndex++
 		visual += escape_html(txt.slice(i))
 	else
-		visual = txt.replace(r, (m) ->
-			ms.push m
-			m = anchor(count) + m + anchor()
+		txt.replace(r, (m) ->
+			for i in [0 ... arguments.length - 2]
+				ms.push arguments[i]
+
+			i = 0
+			j = arguments[arguments.length - 2]
+			k = j + m.length
+			visual += match_visual(txt, i, j, k, count)
+			i = k
 		)
+		visual += escape_html(txt.slice(i))
 
 	$txt.empty().html(visual)
 
@@ -195,6 +200,13 @@ run_match = ->
 	json = JSON.stringify(ms)
 	list += "<pre>#{json}</pre>"
 	$match.html(list)
+
+match_visual = (str, i, j, k, c) ->
+	# Escaping is important.
+	escape_html(str.slice(i, j)) +
+	anchor(c) +
+	str.slice(j, k) +
+	anchor()
 
 input_clear = (err) ->
 	if err

@@ -8,7 +8,7 @@ Sep 2013 ys
 
 
 (function() {
-  var $exp, $exp_dsp, $flags, $match, $txt, anchor, anchor_c, create_match_list, delay_id, delay_run_match, entityMap, escape_exp, escape_html, init, init_bind, init_key_events, input_clear, load_data, match_elem_show_tip, override_return, run_match, save_data, select_all_text, syntax_highlight;
+  var $exp, $exp_dsp, $flags, $match, $txt, anchor, anchor_c, create_match_list, delay_id, delay_run_match, entityMap, escape_exp, escape_html, init, init_affix, init_bind, init_key_events, input_clear, load_data, match_elem_show_tip, match_visual, override_return, run_match, save_data, select_all_text, syntax_highlight;
 
   $exp = $('#exp');
 
@@ -27,9 +27,10 @@ Sep 2013 ys
     init_key_events();
     init_bind();
     $('[title]').tooltip();
-    return setTimeout(function() {
+    setTimeout(function() {
       return $exp.select();
     }, 500);
+    return init_affix();
   };
 
   init_key_events = function() {
@@ -47,6 +48,24 @@ Sep 2013 ys
         return $tar.hide();
       } else {
         return $tar.show();
+      }
+    });
+  };
+
+  init_affix = function() {
+    var $ag, $ap, h;
+    h = $('.brand').outerHeight();
+    $ag = $('.affix-group');
+    $ap = $('.affix-placeholder');
+    return $(window).scroll(function() {
+      var t;
+      t = $(this).scrollTop();
+      if (t >= h) {
+        $ag.addClass('affix');
+        return $ap.height($ag.outerHeight());
+      } else {
+        $ag.removeClass('affix');
+        return $ap.height(0);
       }
     });
   };
@@ -158,8 +177,7 @@ Sep 2013 ys
         ms.push(m[0]);
         k = r.lastIndex;
         j = k - m[0].length;
-        visual += escape_html(txt.slice(i, j)) + anchor(count++);
-        visual += txt.slice(j, k) + anchor();
+        visual += match_visual(txt, i, j, k, count);
         i = k;
         if (m[0].length === 0) {
           r.lastIndex++;
@@ -167,10 +185,18 @@ Sep 2013 ys
       }
       visual += escape_html(txt.slice(i));
     } else {
-      visual = txt.replace(r, function(m) {
-        ms.push(m);
-        return m = anchor(count) + m + anchor();
+      txt.replace(r, function(m) {
+        var _i, _ref;
+        for (i = _i = 0, _ref = arguments.length - 2; 0 <= _ref ? _i < _ref : _i > _ref; i = 0 <= _ref ? ++_i : --_i) {
+          ms.push(arguments[i]);
+        }
+        i = 0;
+        j = arguments[arguments.length - 2];
+        k = j + m.length;
+        visual += match_visual(txt, i, j, k, count);
+        return i = k;
       });
+      visual += escape_html(txt.slice(i));
     }
     $txt.empty().html(visual);
     $txt.find('[index]').hover(match_elem_show_tip, function() {
@@ -182,6 +208,10 @@ Sep 2013 ys
     return $match.html(list);
   };
 
+  match_visual = function(str, i, j, k, c) {
+    return escape_html(str.slice(i, j)) + anchor(c) + str.slice(j, k) + anchor();
+  };
+
   input_clear = function(err) {
     var msg;
     if (err) {
@@ -191,7 +221,7 @@ Sep 2013 ys
       $exp_dsp.text('');
     }
     $match.text('');
-    return $txt.html($txt.text());
+    return $txt.text($txt.text());
   };
 
   syntax_highlight = function(exp, flags) {
@@ -229,7 +259,7 @@ Sep 2013 ys
     }).popover('show');
   };
 
-  save_data = function() {
+  save_data = function(e) {
     $('[save]').each(function() {
       var $this, val;
       $this = $(this);
@@ -237,7 +267,7 @@ Sep 2013 ys
       val = $this[$this.attr('save')]();
       return localStorage.setItem($this.attr('id'), val);
     });
-    return null;
+    return e.preventDefault();
   };
 
   load_data = function() {
