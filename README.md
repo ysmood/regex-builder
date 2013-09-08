@@ -11,17 +11,6 @@ A tool for testing js regular expression.
  - Regular expression syntax highlighting.
  - Easy to copy the result express.
 
-# Build & Control
-
-### Requirement
-
-0. Node.js installed.
-
-### Build
-
-  0. Install the node dependencies: `npm install`
-  0. Compile scripts: `npm run-script build`
-
 # License
 
 BSD-2-Clause
