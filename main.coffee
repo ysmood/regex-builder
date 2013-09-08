@@ -204,7 +204,7 @@ input_clear = (err) ->
 		$exp_dsp.text('')
 
 	$match.text('')
-	$txt.html($txt.text())
+	$txt.text($txt.text())
 
 syntax_highlight = (exp, flags) ->
 	exp_escaped = exp.replace(/\\\//g, '/').replace(/\//g, '\\/')
