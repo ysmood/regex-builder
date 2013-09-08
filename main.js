@@ -8,7 +8,7 @@ Sep 2013 ys
 
 
 (function() {
-  var $exp, $exp_dsp, $flags, $match, $txt, anchor, anchor_c, create_match_list, delay_id, delay_run_match, entityMap, escape_exp, escape_html, init, init_affix, init_bind, init_key_events, input_clear, load_data, match_elem_show_tip, match_visual, override_return, run_match, save_data, select_all_text, syntax_highlight;
+  var $exp, $exp_dsp, $flags, $match, $txt, anchor, anchor_c, create_match_list, delay_id, delay_run_match, entityMap, escape_exp, escape_html, init, init_affix, init_bind, init_hide_switches, init_key_events, input_clear, load_data, match_elem_show_tip, match_visual, override_return, run_match, save_data, select_all_text, syntax_highlight;
 
   $exp = $('#exp');
 
@@ -30,7 +30,8 @@ Sep 2013 ys
     setTimeout(function() {
       return $exp.select();
     }, 500);
-    return init_affix();
+    init_affix();
+    return init_hide_switches();
   };
 
   init_key_events = function() {
@@ -39,17 +40,7 @@ Sep 2013 ys
     $txt.keyup(delay_run_match);
     $exp.keyup(delay_run_match);
     $flags.keyup(delay_run_match);
-    $exp_dsp.click(select_all_text);
-    return $('.switch_hide').click(function() {
-      var $tar, $this;
-      $this = $(this);
-      $tar = $('#' + $this.attr('target'));
-      if ($this.prop('checked')) {
-        return $tar.hide();
-      } else {
-        return $tar.show();
-      }
-    });
+    return $exp_dsp.click(select_all_text);
   };
 
   init_affix = function() {
@@ -80,7 +71,18 @@ Sep 2013 ys
     });
   };
 
-  /((ab(\d))).*/g;
+  init_hide_switches = function() {
+    return $('.switch_hide').click(function() {
+      var $tar, $this;
+      $this = $(this);
+      $tar = $('#' + $this.attr('target'));
+      if ($this.prop('checked')) {
+        return $tar.hide();
+      } else {
+        return $tar.show();
+      }
+    });
+  };
 
   delay_id = null;
 

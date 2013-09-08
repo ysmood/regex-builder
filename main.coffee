@@ -35,6 +35,8 @@ init = ->
 
 	init_affix()
 
+	init_hide_switches()
+
 init_key_events = ->
 	# Edit change
 	$txt.keydown(override_return)
@@ -46,16 +48,6 @@ init_key_events = ->
 	$flags.keyup(delay_run_match)
 
 	$exp_dsp.click(select_all_text)
-
-	$('.switch_hide').click(->
-		$this = $(this)
-		$tar = $('#' + $this.attr('target'))
-
-		if $this.prop('checked')
-			$tar.hide()
-		else
-			$tar.show()
-	)
 
 init_affix = ->
 	h = $('.brand').outerHeight()
@@ -78,7 +70,18 @@ init_bind = ->
 			window[$this.attr('bind')] = $this.val()
 		)
 	)
-/((ab(\d))).*/g
+
+init_hide_switches = ->
+	$('.switch_hide').click(->
+		$this = $(this)
+		$tar = $('#' + $this.attr('target'))
+
+		if $this.prop('checked')
+			$tar.hide()
+		else
+			$tar.show()
+	)
+
 delay_id = null
 delay_run_match = ->
 	elem = this
