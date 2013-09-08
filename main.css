@@ -2,9 +2,6 @@ body {
   background-color: #eee;
   padding-bottom: 500px;
 }
-.grey {
-  color: #999;
-}
 .group {
   padding: 10px 20px;
   border-top: 1px dashed #fff;
@@ -19,15 +16,33 @@ body {
   padding: 15px;
 }
 #exp,
-#cur_exp,
-#flag,
+#exp_dsp,
+#flags,
 #match,
 #txt {
   font-size: 14px;
   font-family: Menlo, "Consolas", monospace;
 }
-#cur_exp {
+#exp {
+  min-height: 34px;
+  padding: 6px 12px;
+  margin: 0;
+  background: #fff;
+}
+#exp:focus {
+  border-color: #66afe9;
+  outline: 0;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075), 0 0 8px rgba(102,175,233,0.6);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,0.075), 0 0 8px rgba(102,175,233,0.6);
+}
+#exp_dsp {
   display: inline-block;
+  cursor: pointer;
+  white-space: pre-wrap;
+  color: #999;
+}
+#exp_dsp .error {
+  color: #f13f86;
 }
 #match {
   background: #fff;
@@ -35,9 +50,14 @@ body {
   box-shadow: 0 1px 3px #aaa;
   padding: 10px;
 }
+.g {
+  white-space: pre-wrap;
+  background: #eee;
+  border-radius: 4px;
+}
 #txt {
-  background: #fff;
   min-height: 300px;
+  background: #fff;
 }
 #txt:focus {
   border-color: #66afe9;

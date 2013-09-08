@@ -20,12 +20,12 @@
 		<div class="row">
 			<div class="col-xs-8">
 				<label for="exp">Regex:</label>
-				<div id='cur_exp' class='regex' title='Simply for you to copy'></div>
-				<input id='exp' save='val' class='form-control' type="text" placeholder='Regex here...'>
+				<div id='exp_dsp' title='Click to select all'></div>
+				<pre id='exp' class='regex' contenteditable='true' save='text'></pre>
 			</div>
 			<div class="col-xs-2">
 				<label for="flag">Flag</label>
-				<input id='flag' save='val' class='form-control' type="text" maxlength=4
+				<input id='flags' save='val' class='form-control' type="text" maxlength=4
 					value='g' title='Set flags here: g, i, m, y'
 				>
 			</div>

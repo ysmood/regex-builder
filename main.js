@@ -8,17 +8,17 @@ Sep 2013 ys
 
 
 (function() {
-  var $cur_exp, $exp, $flag, $match, $txt, anchor, anchor_c, create_match_list, delay_id, delay_run_match, entityMap, escape_exp, escape_html, init, init_bind, init_key_events, load_data, match_elem_show_tip, override_return, run_match, save_data, select_all_text;
+  var $exp, $exp_dsp, $flags, $match, $txt, anchor, anchor_c, create_match_list, delay_id, delay_run_match, entityMap, escape_exp, escape_html, init, init_bind, init_key_events, input_clear, load_data, match_elem_show_tip, override_return, run_match, save_data, select_all_text, syntax_highlight;
 
   $exp = $('#exp');
 
-  $cur_exp = $('#cur_exp');
+  $exp_dsp = $('#exp_dsp');
 
   $txt = $('#txt');
 
   $match = $('#match');
 
-  $flag = $('#flag');
+  $flags = $('#flags');
 
   init = function() {
     load_data();
@@ -34,10 +34,11 @@ Sep 2013 ys
 
   init_key_events = function() {
     $txt.keydown(override_return);
+    $exp.keydown(override_return);
     $txt.keyup(delay_run_match);
     $exp.keyup(delay_run_match);
-    $flag.keyup(delay_run_match);
-    $cur_exp.click(select_all_text);
+    $flags.keyup(delay_run_match);
+    $exp_dsp.click(select_all_text);
     return $('.switch_hide').click(function() {
       var $tar, $this;
       $this = $(this);
@@ -60,6 +61,8 @@ Sep 2013 ys
     });
   };
 
+  /((ab(\d))).*/g;
+
   delay_id = null;
 
   delay_run_match = function() {
@@ -68,11 +71,11 @@ Sep 2013 ys
     clearTimeout(delay_id);
     return delay_id = setTimeout(function() {
       var saved_sel;
-      if (elem.id === 'txt') {
+      if (elem.id === 'txt' || elem.id === 'exp') {
         saved_sel = saveSelection(elem);
       }
       run_match();
-      if (elem.id === 'txt') {
+      if (elem.id === 'txt' || elem.id === 'exp') {
         return restoreSelection(elem, saved_sel);
       }
     }, window.exe_delay);
@@ -130,26 +133,22 @@ Sep 2013 ys
   };
 
   run_match = function() {
-    var count, cur_exp, e, exp, flag, i, j, json, k, list, m, ms, r, txt, visual;
-    exp = $exp.val();
-    flag = $flag.val();
+    var count, e, exp, flags, i, j, json, k, list, m, ms, r, txt, visual;
+    exp = $exp.text();
     txt = $txt.text();
+    flags = $flags.val();
     if (!exp) {
-      $match.text('');
-      $cur_exp.html('');
+      input_clear();
       return;
     }
     try {
-      r = new RegExp(exp, flag);
+      r = new RegExp(exp, flags);
     } catch (_error) {
       e = _error;
-      $match.text(e);
+      input_clear(e);
       return;
     }
-    cur_exp = r.source;
-    cur_exp = cur_exp.replace(/\\\//g, '/').replace(/\//g, '\\/');
-    cur_exp = RegexColorizer.colorizeText(cur_exp);
-    $cur_exp.html('/' + cur_exp + '/' + flag);
+    syntax_highlight(exp, flags);
     ms = [];
     visual = '';
     count = 0;
@@ -183,13 +182,33 @@ Sep 2013 ys
     return $match.html(list);
   };
 
+  input_clear = function(err) {
+    var msg;
+    if (err) {
+      msg = err.message.replace('Invalid regular expression: ', '');
+      $exp_dsp.html("<span class='error'>" + msg + "</span>");
+    } else {
+      $exp_dsp.text('');
+    }
+    $match.text('');
+    return $txt.html($txt.text());
+  };
+
+  syntax_highlight = function(exp, flags) {
+    var exp_escaped;
+    exp_escaped = exp.replace(/\\\//g, '/').replace(/\//g, '\\/');
+    $exp_dsp.text("/" + exp_escaped + "/" + flags);
+    exp = RegexColorizer.colorizeText(exp);
+    return $exp.html(exp);
+  };
+
   create_match_list = function(m) {
     var i, list, _i, _len;
     list = '<ol start="0">';
     if (m) {
       for (_i = 0, _len = m.length; _i < _len; _i++) {
         i = m[_i];
-        list += "<li>" + i + "</li>";
+        list += "<li><span class='g'>" + i + "</span></li>";
       }
     }
     list += '</ol>';
@@ -200,7 +219,7 @@ Sep 2013 ys
     var $this, index, m, reg;
     $this = $(this);
     index = $this.attr('index');
-    reg = new RegExp($exp.val(), $flag.val().replace('g', ''));
+    reg = new RegExp($exp.text(), $flags.val().replace('g', ''));
     m = $this.text().match(reg);
     return $this.popover({
       html: true,
@@ -214,6 +233,7 @@ Sep 2013 ys
     $('[save]').each(function() {
       var $this, val;
       $this = $(this);
+      $this.find('.popover').remove();
       val = $this[$this.attr('save')]();
       return localStorage.setItem($this.attr('id'), val);
     });

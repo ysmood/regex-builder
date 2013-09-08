@@ -8,10 +8,10 @@ Sep 2013 ys
 
 
 $exp = $('#exp')
-$cur_exp = $('#cur_exp')
+$exp_dsp = $('#exp_dsp')
 $txt = $('#txt')
 $match = $('#match')
-$flag = $('#flag')
+$flags = $('#flags')
 
 init = ->
 	# Local storage.
@@ -36,11 +36,14 @@ init = ->
 init_key_events = ->
 	# Edit change
 	$txt.keydown(override_return)
+	$exp.keydown(override_return)
+
 	$txt.keyup(delay_run_match)
 	$exp.keyup(delay_run_match)
-	$flag.keyup(delay_run_match)
 
-	$cur_exp.click(select_all_text)
+	$flags.keyup(delay_run_match)
+
+	$exp_dsp.click(select_all_text)
 
 	$('.switch_hide').click(->
 		$this = $(this)
@@ -59,19 +62,19 @@ init_bind = ->
 			window[$this.attr('bind')] = $this.val()
 		)
 	)
-
+/((ab(\d))).*/g
 delay_id = null
 delay_run_match = ->
 	elem = this
 	clearTimeout(delay_id)
 	delay_id = setTimeout(
 		->
-			if elem.id == 'txt'
+			if elem.id == 'txt' or elem.id == 'exp'
 				saved_sel = saveSelection(elem)
 
 			run_match()
 
-			if elem.id == 'txt'
+			if elem.id == 'txt' or elem.id == 'exp'
 				restoreSelection(elem, saved_sel)
 		window.exe_delay
 	)
@@ -120,26 +123,21 @@ override_return = (e) ->
 		return false
 
 run_match = ->
-	exp = $exp.val()
-	flag = $flag.val()
+	exp = $exp.text()
 	txt = $txt.text()
+	flags = $flags.val()
 
 	if not exp
-		$match.text('')
-		$cur_exp.html('')
+		input_clear()
 		return
 
 	try
-		r = new RegExp(exp, flag)
+		r = new RegExp(exp, flags)
 	catch e
-		$match.text(e)
+		input_clear(e)
 		return
 
-	# Auto format the expression and syntax highlight it.
-	cur_exp = r.source
-	cur_exp = cur_exp.replace(/\\\//g, '/').replace(/\//g, '\\/')
-	cur_exp = RegexColorizer.colorizeText(cur_exp)
-	$cur_exp.html('/' + cur_exp + '/' + flag)
+	syntax_highlight(exp, flags)
 
 	# Store the match groups
 	ms = []
@@ -182,11 +180,28 @@ run_match = ->
 	list += "<pre>#{json}</pre>"
 	$match.html(list)
 
+input_clear = (err) ->
+	if err
+		msg = err.message.replace('Invalid regular expression: ', '')
+		$exp_dsp.html("<span class='error'>#{msg}</span>")
+	else
+		$exp_dsp.text('')
+
+	$match.text('')
+	$txt.html($txt.text())
+
+syntax_highlight = (exp, flags) ->
+	exp_escaped = exp.replace(/\\\//g, '/').replace(/\//g, '\\/')
+	$exp_dsp.text("/#{exp_escaped}/#{flags}")
+
+	exp = RegexColorizer.colorizeText(exp)
+	$exp.html(exp)
+
 create_match_list = (m) ->
 	list = '<ol start="0">'
 	if m
 		for i in m
-			list += "<li>#{i}</li>"
+			list += "<li><span class='g'>#{i}</span></li>"
 	list += '</ol>'
 	list
 
@@ -196,7 +211,7 @@ match_elem_show_tip = ->
 	index = $this.attr('index')
 
 	# Create match list.
-	reg = new RegExp($exp.val(), $flag.val().replace('g', ''))
+	reg = new RegExp($exp.text(), $flags.val().replace('g', ''))
 	m = $this.text().match(reg)
 
 	$this.popover({
@@ -209,6 +224,7 @@ match_elem_show_tip = ->
 save_data = ->
 	$('[save]').each(->
 		$this = $(this)
+		$this.find('.popover').remove()
 		val = $this[$this.attr('save')]()
 
 		localStorage.setItem(
