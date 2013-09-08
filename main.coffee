@@ -33,6 +33,8 @@ init = ->
 		500
 	)
 
+	init_affix()
+
 init_key_events = ->
 	# Edit change
 	$txt.keydown(override_return)
@@ -53,6 +55,20 @@ init_key_events = ->
 			$tar.hide()
 		else
 			$tar.show()
+	)
+
+init_affix = ->
+	h = $('.brand').outerHeight()
+	$ag = $('.affix-group')
+	$ap = $('.affix-placeholder')
+	$(window).scroll(->
+		t = $(this).scrollTop()
+		if t >= h
+			$ag.addClass('affix')
+			$ap.height($ag.outerHeight())
+		else
+			$ag.removeClass('affix')
+			$ap.height(0)
 	)
 
 init_bind = ->
