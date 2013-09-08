@@ -66,6 +66,8 @@ init_affix = ->
 init_bind = ->
 	$('[bind]').each(->
 		$this = $(this)
+		window[$this.attr('bind')] = $this.val()
+
 		$this.change(->
 			window[$this.attr('bind')] = $this.val()
 		)

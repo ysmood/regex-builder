@@ -65,6 +65,7 @@ Sep 2013 ys
     return $('[bind]').each(function() {
       var $this;
       $this = $(this);
+      window[$this.attr('bind')] = $this.val();
       return $this.change(function() {
         return window[$this.attr('bind')] = $this.val();
       });
