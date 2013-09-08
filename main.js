@@ -8,7 +8,7 @@ Sep 2013 ys
 
 
 (function() {
-  var $cur_exp, $exp, $flag, $match, $txt, anchor, anchor_c, create_match_list, delay, delay_id, delay_run_match, entityMap, escape_exp, escape_html, init, init_events, load_data, match_elem_show_tip, override_return, run_match, save_data, select_all_text;
+  var $cur_exp, $exp, $flag, $match, $txt, anchor, anchor_c, create_match_list, delay_id, delay_run_match, entityMap, escape_exp, escape_html, init, init_bind, init_key_events, load_data, match_elem_show_tip, override_return, run_match, save_data, select_all_text;
 
   $exp = $('#exp');
 
@@ -20,28 +20,24 @@ Sep 2013 ys
 
   $flag = $('#flag');
 
-  delay = null;
-
   init = function() {
     load_data();
     $(window).on('beforeunload', save_data);
     run_match();
-    init_events();
+    init_key_events();
+    init_bind();
+    $('[title]').tooltip();
     return setTimeout(function() {
       return $exp.select();
     }, 500);
   };
 
-  init_events = function() {
+  init_key_events = function() {
     $txt.keydown(override_return);
     $txt.keyup(delay_run_match);
     $exp.keyup(delay_run_match);
     $flag.keyup(delay_run_match);
-    $('[title]').tooltip();
     $cur_exp.click(select_all_text);
-    delay = $('#exe_delay').change(function() {
-      return delay = $(this).val();
-    }).val();
     return $('.switch_hide').click(function() {
       var $tar, $this;
       $this = $(this);
@@ -51,6 +47,16 @@ Sep 2013 ys
       } else {
         return $tar.show();
       }
+    });
+  };
+
+  init_bind = function() {
+    return $('[bind]').each(function() {
+      var $this;
+      $this = $(this);
+      return $this.change(function() {
+        return window[$this.attr('bind')] = $this.val();
+      });
     });
   };
 
@@ -69,7 +75,7 @@ Sep 2013 ys
       if (elem.id === 'txt') {
         return restoreSelection(elem, saved_sel);
       }
-    }, delay);
+    }, window.exe_delay);
   };
 
   anchor_c = 0;
@@ -206,9 +212,10 @@ Sep 2013 ys
 
   save_data = function() {
     $('[save]').each(function() {
-      var $this;
+      var $this, val;
       $this = $(this);
-      return localStorage.setItem($this.attr('id'), $this.val());
+      val = $this[$this.attr('save')]();
+      return localStorage.setItem($this.attr('id'), val);
     });
     return null;
   };
@@ -219,7 +226,7 @@ Sep 2013 ys
       $this = $(this);
       v = localStorage.getItem($this.attr('id'));
       if (v !== null) {
-        return $this.val(v);
+        return $this[$this.attr('save')](v);
       }
     });
   };

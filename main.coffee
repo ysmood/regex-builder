@@ -13,8 +13,6 @@ $txt = $('#txt')
 $match = $('#match')
 $flag = $('#flag')
 
-delay = null
-
 init = ->
 	# Local storage.
 	load_data()
@@ -23,7 +21,11 @@ init = ->
 	# After data loaded, run once.
 	run_match()
 
-	init_events()
+	init_key_events()
+	init_bind()
+
+	# Init tooltips.
+	$('[title]').tooltip()
 
 	# Focus on the expression input.
 	setTimeout(
@@ -31,21 +33,14 @@ init = ->
 		500
 	)
 
-init_events = ->
+init_key_events = ->
 	# Edit change
 	$txt.keydown(override_return)
 	$txt.keyup(delay_run_match)
 	$exp.keyup(delay_run_match)
 	$flag.keyup(delay_run_match)
 
-	# Init tooltips.
-	$('[title]').tooltip()
-
 	$cur_exp.click(select_all_text)
-
-	delay = $('#exe_delay').change(->
-		delay = $(this).val()
-	).val()
 
 	$('.switch_hide').click(->
 		$this = $(this)
@@ -55,6 +50,14 @@ init_events = ->
 			$tar.hide()
 		else
 			$tar.show()
+	)
+
+init_bind = ->
+	$('[bind]').each(->
+		$this = $(this)
+		$this.change(->
+			window[$this.attr('bind')] = $this.val()
+		)
 	)
 
 delay_id = null
@@ -70,7 +73,7 @@ delay_run_match = ->
 
 			if elem.id == 'txt'
 				restoreSelection(elem, saved_sel)
-		delay
+		window.exe_delay
 	)
 
 # Generate tag for highlighting in turns.
@@ -206,9 +209,11 @@ match_elem_show_tip = ->
 save_data = ->
 	$('[save]').each(->
 		$this = $(this)
+		val = $this[$this.attr('save')]()
+
 		localStorage.setItem(
 			$this.attr('id'),
-			$this.val()
+			val
 		)
 	)
 	return null
@@ -221,7 +226,7 @@ load_data = ->
 			$this.attr('id')
 		)
 		if v != null
-			$this.val(v)
+			$this[$this.attr('save')](v)
 
 	)
 

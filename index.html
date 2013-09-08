@@ -21,17 +21,19 @@
 			<div class="col-xs-8">
 				<label for="exp">Regex:</label>
 				<div id='cur_exp' class='regex' title='Simply for you to copy'></div>
-				<input id='exp' save class='form-control' type="text" placeholder='Regex here...'>
+				<input id='exp' save='val' class='form-control' type="text" placeholder='Regex here...'>
 			</div>
 			<div class="col-xs-2">
 				<label for="flag">Flag</label>
-				<input id='flag' save class='form-control' type="text" maxlength=4
+				<input id='flag' save='val' class='form-control' type="text" maxlength=4
 					value='g' title='Set flags here: g, i, m, y'
 				>
 			</div>
 			<div class="col-xs-2">
 				<label for="exe_delay">Delay</label>
-				<input type="number" id="exe_delay" save class="form-control" min=0 value="300" title="Execution delay, millisecond">
+				<input type="number" id="exe_delay" bind='exe_delay' save='val' class="form-control"
+					min=0 value="300" title="Execution delay, millisecond"
+				>
 			</div>
 		</div>
 	</div>
@@ -41,7 +43,7 @@
 		<label class="pull-right">
 			<input type="checkbox" class="switch_hide" target="txt"> Hide
 		</label>
-		<pre id='txt' contenteditable='true' spellcheck='false'></pre>
+		<pre id='txt' save='text' contenteditable='true' spellcheck='false'></pre>
 	</div>
 
 	<div class="group">
