@@ -22,8 +22,7 @@ body {
 #cur_exp,
 #flag,
 #match,
-#visual-pre,
-#input {
+#txt {
   font-size: 14px;
   font-family: Menlo, "Consolas", monospace;
 }
@@ -34,26 +33,27 @@ body {
   background: #fff;
   border-radius: 3px;
   box-shadow: 0 1px 3px #aaa;
-}
-#match {
   padding: 10px;
 }
-#input {
-  min-height: 300px;
-}
-#visual-pre {
-  min-height: 300px;
+#txt {
   background: #fff;
+  min-height: 300px;
 }
-#visual-pre i,
-#visual-pre b {
+#txt:focus {
+  border-color: #66afe9;
+  outline: 0;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075), 0 0 8px rgba(102,175,233,0.6);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,0.075), 0 0 8px rgba(102,175,233,0.6);
+}
+#txt i,
+#txt b {
   border-radius: 4px;
   font-style: normal;
   font-weight: normal;
 }
-#visual-pre i {
+#txt i {
   box-shadow: 0 0 0 1px #09f;
 }
-#visual-pre b {
+#txt b {
   box-shadow: 0 0 0 1px #df56ad;
 }
