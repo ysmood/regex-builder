@@ -237,7 +237,7 @@ match_elem_show_tip = ->
 		placement: 'bottom'
 	}).popover('show')
 
-save_data = ->
+save_data = (e) ->
 	$('[save]').each(->
 		$this = $(this)
 		$this.find('.popover').remove()
@@ -248,7 +248,7 @@ save_data = ->
 			val
 		)
 	)
-	return null
+	e.preventDefault()
 
 load_data = ->
 	# Load data.
