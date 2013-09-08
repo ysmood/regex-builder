@@ -144,6 +144,9 @@ override_return = (e) ->
 		return false
 
 run_match = ->
+	# Clear other tags.
+	$txt.find('div').remove()
+
 	exp = $exp.text()
 	txt = $txt.text()
 	flags = $flags.val()
@@ -213,15 +216,13 @@ run_match = ->
 	# Show the match object as json string.
 	if is_match_shown
 		list = create_match_list(ms)
-		json = JSON.stringify(ms)
-		list += "<pre>#{json}</pre>"
 		$match.html(list)
 
 match_visual = (str, i, j, k, c) ->
 	# Escaping is important.
 	escape_html(str.slice(i, j)) +
 	anchor(c) +
-	str.slice(j, k) +
+	escape_html(str.slice(j, k)) +
 	anchor()
 
 input_clear = (err) ->
@@ -245,7 +246,8 @@ create_match_list = (m) ->
 	list = '<ol start="0">'
 	if m
 		for i in m
-			list += "<li><span class='g'>#{i}</span></li>"
+			es = escape_html(i)
+			list += "<li><span class='g'>#{es}</span></li>"
 	list += '</ol>'
 	list
 

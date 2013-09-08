@@ -155,7 +155,8 @@ Sep 2013 ys
   };
 
   run_match = function() {
-    var count, e, exp, flags, i, is_match_shown, is_txt_shown, j, json, k, list, m, ms, r, txt, visual;
+    var count, e, exp, flags, i, is_match_shown, is_txt_shown, j, k, list, m, ms, r, txt, visual;
+    $txt.find('div').remove();
     exp = $exp.text();
     txt = $txt.text();
     flags = $flags.val();
@@ -214,14 +215,12 @@ Sep 2013 ys
     }
     if (is_match_shown) {
       list = create_match_list(ms);
-      json = JSON.stringify(ms);
-      list += "<pre>" + json + "</pre>";
       return $match.html(list);
     }
   };
 
   match_visual = function(str, i, j, k, c) {
-    return escape_html(str.slice(i, j)) + anchor(c) + str.slice(j, k) + anchor();
+    return escape_html(str.slice(i, j)) + anchor(c) + escape_html(str.slice(j, k)) + anchor();
   };
 
   input_clear = function(err) {
@@ -245,12 +244,13 @@ Sep 2013 ys
   };
 
   create_match_list = function(m) {
-    var i, list, _i, _len;
+    var es, i, list, _i, _len;
     list = '<ol start="0">';
     if (m) {
       for (_i = 0, _len = m.length; _i < _len; _i++) {
         i = m[_i];
-        list += "<li><span class='g'>" + i + "</span></li>";
+        es = escape_html(i);
+        list += "<li><span class='g'>" + es + "</span></li>";
       }
     }
     list += '</ol>';
