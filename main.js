@@ -182,7 +182,7 @@ Sep 2013 ys
         k = r.lastIndex;
         j = k - m[0].length;
         if (is_txt_shown) {
-          visual += match_visual(txt, i, j, k, count);
+          visual += match_visual(txt, i, j, k, count++);
         }
         i = k;
         if (m[0].length === 0) {
@@ -199,7 +199,7 @@ Sep 2013 ys
         j = arguments[arguments.length - 2];
         k = j + m.length;
         if (is_txt_shown) {
-          visual += match_visual(txt, i, j, k, count);
+          visual += match_visual(txt, i, j, k, count++);
         }
         return i = k;
       });

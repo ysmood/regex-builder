@@ -69,6 +69,9 @@ body {
   min-height: 300px;
   background: #fff;
 }
+#txt ol li:first-child {
+  opacity: 0.5;
+}
 #txt:focus {
   border-color: #66afe9;
   outline: 0;

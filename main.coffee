@@ -175,7 +175,7 @@ run_match = ->
 			j = k - m[0].length
 
 			if is_txt_shown
-				visual += match_visual(txt, i, j, k, count)
+				visual += match_visual(txt, i, j, k, count++)
 
 			i = k
 
@@ -192,7 +192,7 @@ run_match = ->
 			k = j + m.length
 
 			if is_txt_shown
-				visual += match_visual(txt, i, j, k, count)
+				visual += match_visual(txt, i, j, k, count++)
 
 			i = k
 		)
