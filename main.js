@@ -152,7 +152,7 @@ Sep 2013 ys
   };
 
   run_match = function() {
-    var count, e, exp, flags, i, j, json, k, list, m, ms, r, txt, visual;
+    var count, e, exp, flags, i, is_match_shown, is_txt_shown, j, json, k, list, m, ms, r, txt, visual;
     exp = $exp.text();
     txt = $txt.text();
     flags = $flags.val();
@@ -169,6 +169,8 @@ Sep 2013 ys
     }
     syntax_highlight(exp, flags);
     ms = [];
+    is_txt_shown = $txt.is(":visible");
+    is_match_shown = $match.is(":visible");
     visual = '';
     count = 0;
     if (r.global) {
@@ -177,13 +179,14 @@ Sep 2013 ys
         ms.push(m[0]);
         k = r.lastIndex;
         j = k - m[0].length;
-        visual += match_visual(txt, i, j, k, count);
+        if (is_txt_shown) {
+          visual += match_visual(txt, i, j, k, count);
+        }
         i = k;
         if (m[0].length === 0) {
           r.lastIndex++;
         }
       }
-      visual += escape_html(txt.slice(i));
     } else {
       txt.replace(r, function(m) {
         var _i, _ref;
@@ -193,19 +196,25 @@ Sep 2013 ys
         i = 0;
         j = arguments[arguments.length - 2];
         k = j + m.length;
-        visual += match_visual(txt, i, j, k, count);
+        if (is_txt_shown) {
+          visual += match_visual(txt, i, j, k, count);
+        }
         return i = k;
       });
-      visual += escape_html(txt.slice(i));
     }
-    $txt.empty().html(visual);
-    $txt.find('[index]').hover(match_elem_show_tip, function() {
-      return $(this).popover('destroy');
-    });
-    list = create_match_list(ms);
-    json = JSON.stringify(ms);
-    list += "<pre>" + json + "</pre>";
-    return $match.html(list);
+    if (is_txt_shown) {
+      visual += escape_html(txt.slice(i));
+      $txt.empty().html(visual);
+      $txt.find('[index]').hover(match_elem_show_tip, function() {
+        return $(this).popover('destroy');
+      });
+    }
+    if (is_match_shown) {
+      list = create_match_list(ms);
+      json = JSON.stringify(ms);
+      list += "<pre>" + json + "</pre>";
+      return $match.html(list);
+    }
   };
 
   match_visual = function(str, i, j, k, c) {

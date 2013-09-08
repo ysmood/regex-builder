@@ -158,6 +158,9 @@ run_match = ->
 	# Store the match groups
 	ms = []
 
+	is_txt_shown = $txt.is(":visible")
+	is_match_shown = $match.is(":visible")
+
 	# Highlighting match words.
 	visual = ''
 	count = 0
@@ -167,13 +170,15 @@ run_match = ->
 			ms.push m[0]
 			k = r.lastIndex
 			j = k - m[0].length
-			visual += match_visual(txt, i, j, k, count)
+
+			if is_txt_shown
+				visual += match_visual(txt, i, j, k, count)
+
 			i = k
 
 			# Empty match will also increase the counter.
 			if m[0].length == 0
 				r.lastIndex++
-		visual += escape_html(txt.slice(i))
 	else
 		txt.replace(r, (m) ->
 			for i in [0 ... arguments.length - 2]
@@ -182,24 +187,30 @@ run_match = ->
 			i = 0
 			j = arguments[arguments.length - 2]
 			k = j + m.length
-			visual += match_visual(txt, i, j, k, count)
+
+			if is_txt_shown
+				visual += match_visual(txt, i, j, k, count)
+
 			i = k
 		)
+
+	if is_txt_shown
 		visual += escape_html(txt.slice(i))
 
-	$txt.empty().html(visual)
+		$txt.empty().html(visual)
 
-	$txt.find('[index]').hover(
-		match_elem_show_tip
-		->
-			$(this).popover('destroy')
-	)
+		$txt.find('[index]').hover(
+			match_elem_show_tip
+			->
+				$(this).popover('destroy')
+		)
 
 	# Show the match object as json string.
-	list = create_match_list(ms)
-	json = JSON.stringify(ms)
-	list += "<pre>#{json}</pre>"
-	$match.html(list)
+	if is_match_shown
+		list = create_match_list(ms)
+		json = JSON.stringify(ms)
+		list += "<pre>#{json}</pre>"
+		$match.html(list)
 
 match_visual = (str, i, j, k, c) ->
 	# Escaping is important.
