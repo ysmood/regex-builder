@@ -13,6 +13,8 @@ $txt = $('#txt')
 $match = $('#match')
 $flags = $('#flags')
 
+is_past = false
+
 init = ->
 	# Local storage.
 	load_data()
@@ -44,6 +46,8 @@ init_key_events = ->
 
 	$txt.keyup(delay_run_match)
 	$exp.keyup(delay_run_match)
+
+	$txt.on('paste', -> is_past = true)
 
 	$flags.keyup(delay_run_match)
 
@@ -148,8 +152,16 @@ run_match = ->
 	$txt.find('div').remove()
 
 	exp = $exp.text()
-	txt = $txt.text()
 	flags = $flags.val()
+
+	if is_past
+		$txt.html(
+			clean_past_data($txt.html())
+		)
+		is_past = false
+
+	txt = $txt.text()
+
 
 	if not exp
 		input_clear()
@@ -234,6 +246,12 @@ input_clear = (err) ->
 
 	$match.text('')
 	$txt.text($txt.text())
+
+clean_past_data = (txt) ->
+	if txt.indexOf('<br>') > -1
+		txt = txt.replace(/<br>/g, '\n')
+
+	txt
 
 syntax_highlight = (exp, flags) ->
 	exp_escaped = exp.replace(/\\\//g, '/').replace(/\//g, '\\/')
