@@ -312,6 +312,24 @@ load_data = ->
 
 	)
 
+window.share_state = ->
+	data = {
+		exp: $exp.text()
+		flags: $flags.val()
+		txt: $txt.text()
+	}
+
+	$('#share').val(JSON.stringify(data)).select()
+
+window.apply_state = ->
+	data = JSON.parse($('#share').val())
+	$exp.text(data.exp)
+	$flags.val(data.flags)
+	$txt.text(data.txt)
+
+	run_match()
+
+
 `
 if (window.getSelection && document.createRange) {
     saveSelection = function(containerEl) {

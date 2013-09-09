@@ -312,6 +312,25 @@ Sep 2013 ys
     });
   };
 
+  window.share_state = function() {
+    var data;
+    data = {
+      exp: $exp.text(),
+      flags: $flags.val(),
+      txt: $txt.text()
+    };
+    return $('#share').val(JSON.stringify(data)).select();
+  };
+
+  window.apply_state = function() {
+    var data;
+    data = JSON.parse($('#share').val());
+    $exp.text(data.exp);
+    $flags.val(data.flags);
+    $txt.text(data.txt);
+    return run_match();
+  };
+
   
 if (window.getSelection && document.createRange) {
     saveSelection = function(containerEl) {

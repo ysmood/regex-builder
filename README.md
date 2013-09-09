@@ -13,7 +13,7 @@ It is still under heavy development. Only tested on the Chrome, Safari and Firef
  - Regular expression syntax highlighting.
  - Supports multiline regular expression.
  - Even works on your mobile phone.
- - Easy to copy the result expression.
+ - Supports sharing state.
 
 # Screenshots
 

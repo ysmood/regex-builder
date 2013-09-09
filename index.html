@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" manifest='regex-builder.appcache'>
 <head>
-	<meta name="viewport" content="width=device-width, user-scalable=false">
+	<meta name="viewport" content="width=device-width">
 	<meta charset="UTF-8">
 	<title>Regex Builder</title>
 	<link rel="shortcut icon" href="favicon.ico" />
@@ -58,6 +58,21 @@
 		</label>
 		<div id='match'></div>
 	</div>
+
+	<div class="group">
+		<div class="input-group" title="copy here to share your current state">
+			<span class="input-group-btn">
+				<button class="btn btn-default" onclick="share_state()" type="button">Share</button>
+			</span>
+			<input id="share" type="text" class="form-control"
+				placeholder='click Apply to apply the shared state.' spellcheck='false'
+			>
+			<span class="input-group-btn">
+				<button class="btn btn-default" onclick="apply_state()" type="button">Apply</button>
+			</span>
+		</div>
+	</div>
+
 </div>
 
 <footer>
