@@ -18,6 +18,7 @@ It is still under heavy development. Only tested on the Chrome, Safari and Firef
 # Screenshots
 
  ![demo][1]
+ ![multiline][2]
 
 # License
 
@@ -27,3 +28,4 @@ Aug 2013 ys
 
 
   [1]: https://raw.github.com/ysmood/regex-builder/gh-pages/img/demo.jpg
+  [2]: https://raw.github.com/ysmood/regex-builder/gh-pages/img/multiline.jpg
