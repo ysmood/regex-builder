@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" manifest='regex-builder.appcache'>
 <head>
+	<meta name="viewport" content="width=device-width, user-scalable=false">
 	<meta charset="UTF-8">
 	<title>Regex Builder</title>
 	<link rel="shortcut icon" href="favicon.ico" />
@@ -11,21 +12,16 @@
 <body>
 
 <div id='main' class='form-inline'>
-	<div class="brand group">
-		<h1 class="text-center">
-			<a href="https://github.com/ysmood/regex-builder" title="Github" data-placement="bottom" target="_bland">Regex Builder</a>
-		</h1>
-	</div>
-
 	<div class="affix-placeholder"></div>
 
-	<div class="affix-group">
+	<div class="affix">
 		<div class="row">
 			<div class="col-xs-8">
 				<label for="exp">Regex:</label>
 				<div id='exp_dsp' class="grey" title='Click to select all'></div>
 				<pre id='exp' class='regex' save='text' contenteditable='true' spellcheck='false'></pre>
 			</div>
+			<div class="clearfix visible-xs"></div>
 			<div class="col-xs-2">
 				<label for="flags">Flags</label>
 				<input id='flags' save='val' class='form-control' type="text" maxlength=4
@@ -39,6 +35,12 @@
 				>
 			</div>
 		</div>
+	</div>
+
+	<div class="brand group">
+		<h1 class="text-center">
+			<a href="https://github.com/ysmood/regex-builder" title="Github" data-placement="bottom" target="_bland">Regex Builder</a>
+		</h1>
 	</div>
 
 	<div class="group">

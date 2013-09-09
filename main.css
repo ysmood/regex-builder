@@ -20,18 +20,17 @@ body {
 }
 .group {
   padding: 10px 20px;
-  border-top: 1px solid #fff;
-  border-bottom: 1px solid #ccc;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #bbb;
 }
 .affix {
   top: 0;
-}
-.affix-group {
   width: 100%;
   padding: 15px;
   background: #eee;
   background: rgba(255,255,255,0.5);
   box-shadow: 0 1px 5px #aaa;
+  border-bottom: 1px solid #fff;
 }
 #exp,
 #exp_dsp,
@@ -39,7 +38,7 @@ body {
 #match,
 #txt {
   font-size: 14px;
-  font-family: Menlo, "Consolas", monospace;
+  font-family: Menlo, Consolas, Monaco, 'Lucida Console', 'Liberation Mono', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Courier New', monospace, serif;
 }
 #exp {
   min-height: 34px;

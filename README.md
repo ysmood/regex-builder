@@ -11,6 +11,8 @@ It is still under heavy development. Only tested on the Chrome, Safari and Firef
  - Works even when offline.
  - Tidy and compact UI layout.
  - Regular expression syntax highlighting.
+ - Supports multiline regular expression.
+ - Even works on your mobile phone.
  - Easy to copy the result expression.
 
 # Screenshots

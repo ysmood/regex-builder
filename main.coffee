@@ -6,7 +6,7 @@ Sep 2013 ys
 
 ###
 
-
+$window = $(window)
 $exp = $('#exp')
 $exp_dsp = $('#exp_dsp')
 $txt = $('#txt')
@@ -18,7 +18,10 @@ is_past = false
 init = ->
 	# Local storage.
 	load_data()
-	$(window).on('beforeunload', save_data)
+	$window.on('beforeunload', save_data)
+
+	on_window_resize()
+	$window.resize(on_window_resize)
 
 	# After data loaded, run once.
 	run_match()
@@ -54,17 +57,11 @@ init_key_events = ->
 	$exp_dsp.click(select_all_text)
 
 init_affix = ->
-	h = $('.brand').outerHeight()
-	$ag = $('.affix-group')
+	$af = $('.affix')
 	$ap = $('.affix-placeholder')
-	$(window).scroll(->
-		t = $(this).scrollTop()
-		if t >= h
-			$ag.addClass('affix')
-			$ap.height($ag.outerHeight())
-		else
-			$ag.removeClass('affix')
-			$ap.height(0)
+	$ap.height($af.outerHeight())
+	$window.scroll(->
+		$ap.height($af.outerHeight())
 	)
 
 init_bind = ->
@@ -87,6 +84,14 @@ init_hide_switches = ->
 		else
 			$tar.show()
 	)
+
+on_window_resize = ->
+	if $window.width() < 768
+		$('.col-xs-8').removeClass('col-xs-8').addClass('col-xs-12')
+		$('.col-xs-2').removeClass('col-xs-2').addClass('col-xs-6')
+	else
+		$('.col-xs-12').removeClass('col-xs-12').addClass('col-xs-8')
+		$('.col-xs-6').removeClass('col-xs-6').addClass('col-xs-2')
 
 delay_id = null
 delay_run_match = ->

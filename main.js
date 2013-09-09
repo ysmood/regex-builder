@@ -8,7 +8,9 @@ Sep 2013 ys
 
 
 (function() {
-  var $exp, $exp_dsp, $flags, $match, $txt, anchor, anchor_c, clean_past_data, create_match_list, delay_id, delay_run_match, entityMap, escape_exp, escape_html, init, init_affix, init_bind, init_hide_switches, init_key_events, input_clear, is_past, load_data, match_elem_show_tip, match_visual, override_return, run_match, save_data, select_all_text, syntax_highlight;
+  var $exp, $exp_dsp, $flags, $match, $txt, $window, anchor, anchor_c, clean_past_data, create_match_list, delay_id, delay_run_match, entityMap, escape_exp, escape_html, init, init_affix, init_bind, init_hide_switches, init_key_events, input_clear, is_past, load_data, match_elem_show_tip, match_visual, on_window_resize, override_return, run_match, save_data, select_all_text, syntax_highlight;
+
+  $window = $(window);
 
   $exp = $('#exp');
 
@@ -24,7 +26,9 @@ Sep 2013 ys
 
   init = function() {
     load_data();
-    $(window).on('beforeunload', save_data);
+    $window.on('beforeunload', save_data);
+    on_window_resize();
+    $window.resize(on_window_resize);
     run_match();
     init_key_events();
     init_bind();
@@ -49,20 +53,12 @@ Sep 2013 ys
   };
 
   init_affix = function() {
-    var $ag, $ap, h;
-    h = $('.brand').outerHeight();
-    $ag = $('.affix-group');
+    var $af, $ap;
+    $af = $('.affix');
     $ap = $('.affix-placeholder');
-    return $(window).scroll(function() {
-      var t;
-      t = $(this).scrollTop();
-      if (t >= h) {
-        $ag.addClass('affix');
-        return $ap.height($ag.outerHeight());
-      } else {
-        $ag.removeClass('affix');
-        return $ap.height(0);
-      }
+    $ap.height($af.outerHeight());
+    return $window.scroll(function() {
+      return $ap.height($af.outerHeight());
     });
   };
 
@@ -88,6 +84,16 @@ Sep 2013 ys
         return $tar.show();
       }
     });
+  };
+
+  on_window_resize = function() {
+    if ($window.width() < 768) {
+      $('.col-xs-8').removeClass('col-xs-8').addClass('col-xs-12');
+      return $('.col-xs-2').removeClass('col-xs-2').addClass('col-xs-6');
+    } else {
+      $('.col-xs-12').removeClass('col-xs-12').addClass('col-xs-8');
+      return $('.col-xs-6').removeClass('col-xs-6').addClass('col-xs-2');
+    }
   };
 
   delay_id = null;
