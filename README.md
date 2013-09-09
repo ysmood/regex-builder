@@ -17,7 +17,12 @@ It is still under heavy development. Only tested on the Chrome, Safari and Firef
 
 # Screenshots
 
+### Subgroups
+
  ![demo][1]
+
+### Multiline regular expression
+
  ![multiline][2]
 
 # License
