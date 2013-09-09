@@ -24,4 +24,4 @@ BSD-2-Clause
 Aug 2013 ys
 
 
-  [1]: https://github.com/downloads/ysmood/regex-builder/img/demo.jpg
+  [1]: https://raw.github.com/ysmood/regex-builder/master/img/demo.jpg
