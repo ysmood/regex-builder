@@ -13,7 +13,7 @@ $txt = $('#txt')
 $match = $('#match')
 $flags = $('#flags')
 
-is_past = false
+is_paste = false
 
 init = ->
 	# Local storage.
@@ -50,7 +50,7 @@ init_key_events = ->
 	$txt.keyup(delay_run_match)
 	$exp.keyup(delay_run_match)
 
-	$txt.on('paste', -> is_past = true)
+	$txt.on('paste', -> is_paste = true)
 
 	$flags.keyup(delay_run_match)
 
@@ -159,11 +159,11 @@ run_match = ->
 	exp = $exp.text()
 	flags = $flags.val()
 
-	if is_past
+	if is_paste
 		$txt.html(
 			clean_past_data($txt.html())
 		)
-		is_past = false
+		is_paste = false
 
 	txt = $txt.text()
 
@@ -253,10 +253,7 @@ input_clear = (err) ->
 	$txt.text($txt.text())
 
 clean_past_data = (txt) ->
-	if txt.indexOf('<br>') > -1
-		txt = txt.replace(/<br>/g, '\n')
-
-	txt
+	txt.replace(/<br[^>]+?>/ig, '\n')
 
 syntax_highlight = (exp, flags) ->
 	exp_escaped = exp.replace(/\\\//g, '/').replace(/\//g, '\\/')

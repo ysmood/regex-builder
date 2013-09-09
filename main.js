@@ -8,7 +8,7 @@ Sep 2013 ys
 
 
 (function() {
-  var $exp, $exp_dsp, $flags, $match, $txt, $window, anchor, anchor_c, clean_past_data, create_match_list, delay_id, delay_run_match, entityMap, escape_exp, escape_html, init, init_affix, init_bind, init_hide_switches, init_key_events, input_clear, is_past, load_data, match_elem_show_tip, match_visual, on_window_resize, override_return, run_match, save_data, select_all_text, syntax_highlight;
+  var $exp, $exp_dsp, $flags, $match, $txt, $window, anchor, anchor_c, clean_past_data, create_match_list, delay_id, delay_run_match, entityMap, escape_exp, escape_html, init, init_affix, init_bind, init_hide_switches, init_key_events, input_clear, is_paste, load_data, match_elem_show_tip, match_visual, on_window_resize, override_return, run_match, save_data, select_all_text, syntax_highlight;
 
   $window = $(window);
 
@@ -22,7 +22,7 @@ Sep 2013 ys
 
   $flags = $('#flags');
 
-  is_past = false;
+  is_paste = false;
 
   init = function() {
     load_data();
@@ -46,7 +46,7 @@ Sep 2013 ys
     $txt.keyup(delay_run_match);
     $exp.keyup(delay_run_match);
     $txt.on('paste', function() {
-      return is_past = true;
+      return is_paste = true;
     });
     $flags.keyup(delay_run_match);
     return $exp_dsp.click(select_all_text);
@@ -170,9 +170,9 @@ Sep 2013 ys
     $txt.find('div').remove();
     exp = $exp.text();
     flags = $flags.val();
-    if (is_past) {
+    if (is_paste) {
       $txt.html(clean_past_data($txt.html()));
-      is_past = false;
+      is_paste = false;
     }
     txt = $txt.text();
     if (!exp) {
@@ -251,10 +251,7 @@ Sep 2013 ys
   };
 
   clean_past_data = function(txt) {
-    if (txt.indexOf('<br>') > -1) {
-      txt = txt.replace(/<br>/g, '\n');
-    }
-    return txt;
+    return txt.replace(/<br[^>]+?>/ig, '\n');
   };
 
   syntax_highlight = function(exp, flags) {
