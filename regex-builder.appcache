@@ -3,6 +3,7 @@ CACHE MANIFEST
 index.html
 main.js
 main.css
+img/bg.jpg
 bower_components/bootstrap/dist/css/bootstrap.min.css
 regex-colorizer/nobg.css
 bower_components/jquery/jquery.min.js
