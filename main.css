@@ -1,15 +1,21 @@
 .grey {
   color: #999;
 }
+html,
+body {
+  height: 100%;
+}
 body {
   background-color: #eee;
+  background-image: url("img/bg.jpg");
+  background-size: 100% 100%;
   padding-bottom: 500px;
 }
 .brand h1 {
   margin: 0;
-  font-weight: 100;
 }
 .brand a {
+  font-weight: 100;
   color: #555;
 }
 .group {
@@ -24,6 +30,7 @@ body {
   width: 100%;
   padding: 15px;
   background: #eee;
+  background: rgba(255,255,255,0.5);
   box-shadow: 0 1px 5px #aaa;
 }
 #exp,
