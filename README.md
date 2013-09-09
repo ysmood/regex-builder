@@ -2,7 +2,7 @@
 
 A tool for testing js regular expression.
 
-It is still under heavy development. Only tested on the Chrome and Safari.
+It is still under heavy development. Only tested on the Chrome, Safari and Firefox.
 
 # Features
 
@@ -24,4 +24,4 @@ BSD-2-Clause
 Aug 2013 ys
 
 
-  [1]: https://raw.github.com/ysmood/regex-builder/master/img/demo.jpg
+  [1]: https://raw.github.com/ysmood/regex-builder/gh-pages/img/demo.jpg
