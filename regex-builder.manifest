@@ -1,5 +1,7 @@
 CACHE MANIFEST
 # v0.1.0
+
+CACHE:
 index.html
 main.js
 main.css
@@ -10,3 +12,6 @@ bower_components/jquery/jquery.min.js
 bower_components/bootstrap/dist/js/bootstrap.min.js
 bower_components/xregexp/xregexp-all.js
 regex-colorizer/regex-colorizer.js
+
+NETWORK:
+*
