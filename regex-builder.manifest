@@ -5,8 +5,9 @@ CACHE:
 
 index.html
 
+styles/main.css
+
 lib/main.js
-lib/main.css
 lib/regex-colorizer/nobg.css
 lib/regex-colorizer/regex-colorizer.js
 
