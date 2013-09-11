@@ -237,6 +237,7 @@ syntax_highlight = (exp, flags) ->
 
 	exp = RegexColorizer.colorizeText(exp)
 	$exp.html(exp)
+	$exp.find('[title]').removeAttr('title')
 
 create_match_ol = (ms) ->
 	if not ms
