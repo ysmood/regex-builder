@@ -50,15 +50,16 @@ init_key_events = ->
 	$exp.keyup(update_affix)
 
 	# Force to paste plain text.
-	$txt[0].addEventListener('paste', (e) ->
-		text = e.clipboardData.getData("text/plain")
-		document.execCommand("insertHTML", false, text)
-		e.preventDefault()
-	)
+	$txt[0].addEventListener('paste', clean_paste_text)
 
 	$flags.keyup(delay_run_match)
 
 	$exp_dsp.click(select_all_text)
+
+clean_paste_text = (e) ->
+	text = e.clipboardData.getData("text/plain")
+	document.execCommand("insertHTML", false, escape_html(text))
+	e.preventDefault()
 
 update_affix = ->
 	$af = $('.affix')
