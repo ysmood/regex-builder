@@ -17,15 +17,21 @@
 	<div class="affix">
 		<div class="row">
 			<div class="col-xs-8">
-				<label for="exp">Regex:</label>
-				<div id='exp_dsp' class="grey" title='Click to select all'></div>
+				<label for="exp">
+					<a href="http://xregexp.com/" target="_blank"
+						data-placement="bottom" title="Supports native RegExp and XRegExp"
+					>
+						XRegExp
+					</a>:
+				</label>
+				<div id='exp_dsp' class="grey" data-placement="bottom"  title='Click to select all'></div>
 				<pre id='exp' class='regex' save='text' contenteditable='true' spellcheck='false'></pre>
 			</div>
 			<div class="clearfix visible-xs"></div>
 			<div class="col-xs-2">
 				<label for="flags">Flags</label>
 				<input id='flags' save='val' class='form-control' type="text" maxlength=4
-					value='g' title='Set flags here: g, i, m, y'
+					value='g' title='Set flags here: g, i, m, y, x'
 				>
 			</div>
 			<div class="col-xs-2">
@@ -39,7 +45,11 @@
 
 	<div class="brand group">
 		<h1 class="text-center">
-			<a href="https://github.com/ysmood/regex-builder" title="Github" data-placement="bottom" target="_bland">Regex Builder</a>
+			<a href="https://github.com/ysmood/regex-builder"
+				title="Github" data-placement="bottom" target="_bland"
+			>
+				Regex Builder
+			</a>
 		</h1>
 	</div>
 

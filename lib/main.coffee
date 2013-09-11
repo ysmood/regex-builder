@@ -13,8 +13,6 @@ $txt = $('#txt')
 $match = $('#match')
 $flags = $('#flags')
 
-is_paste = false
-
 init = ->
 	# Local storage.
 	load_data()
@@ -38,7 +36,7 @@ init = ->
 		500
 	)
 
-	init_affix()
+	update_affix()
 
 	init_hide_switches()
 
@@ -49,20 +47,23 @@ init_key_events = ->
 
 	$txt.keyup(delay_run_match)
 	$exp.keyup(delay_run_match)
+	$exp.keyup(update_affix)
 
-	$txt.on('paste', -> is_paste = true)
+	# Force to paste plain text.
+	$txt[0].addEventListener('paste', (e) ->
+		text = e.clipboardData.getData("text/plain")
+		document.execCommand("insertHTML", false, text)
+		e.preventDefault()
+	)
 
 	$flags.keyup(delay_run_match)
 
 	$exp_dsp.click(select_all_text)
 
-init_affix = ->
+update_affix = ->
 	$af = $('.affix')
 	$ap = $('.affix-placeholder')
 	$ap.height($af.outerHeight())
-	$window.scroll(->
-		$ap.height($af.outerHeight())
-	)
 
 init_bind = ->
 	$('[bind]').each(->
@@ -158,13 +159,6 @@ run_match = ->
 
 	exp = $exp.text()
 	flags = $flags.val()
-
-	if is_paste
-		$txt.html(
-			clean_past_data($txt.html())
-		)
-		is_paste = false
-
 	txt = $txt.text()
 
 
@@ -173,7 +167,7 @@ run_match = ->
 		return
 
 	try
-		r = new RegExp(exp, flags)
+		r = XRegExp(exp, flags)
 	catch e
 		input_clear(e)
 		return
@@ -186,40 +180,25 @@ run_match = ->
 	is_txt_shown = $txt.is(":visible")
 	is_match_shown = $match.is(":visible")
 
-	# Highlighting match words.
-	visual = ''
-	count = 0
-	if r.global
-		i = 0
-		while (m = r.exec(txt)) != null
-			ms.push m[0]
-			k = r.lastIndex
-			j = k - m[0].length
+	# Find all groups.
+	pos = 0
+	while m = XRegExp.exec(txt, r, pos)
+		m.lastIndex = m.index + m[0].length
+		ms.push m
 
-			if is_txt_shown
-				visual += match_visual(txt, i, j, k, count++)
+		pos = m.lastIndex
 
-			i = k
-
-			# Empty match will also increase the counter.
-			if m[0].length == 0
-				r.lastIndex++
-	else
-		txt.replace(r, (m) ->
-			for i in [0 ... arguments.length - 2]
-				ms.push arguments[i]
-
-			i = 0
-			j = arguments[arguments.length - 2]
-			k = j + m.length
-
-			if is_txt_shown
-				visual += match_visual(txt, i, j, k, count++)
-
-			i = k
-		)
+		# Empty match will also increase the counter.
+		if m[0].length == 0
+			pos++
 
 	if is_txt_shown
+		visual = ''
+		i = 0
+		count = 0
+		for m in ms
+			visual += match_visual(txt, i, m.index, m.lastIndex, count++)
+			i = m.lastIndex
 		visual += escape_html(txt.slice(i))
 
 		$txt.empty().html(visual)
@@ -232,7 +211,7 @@ run_match = ->
 
 	# Show the match object as json string.
 	if is_match_shown
-		list = create_match_list(ms)
+		list = create_match_ol(ms)
 		$match.html(list)
 
 match_visual = (str, i, j, k, c) ->
@@ -252,9 +231,6 @@ input_clear = (err) ->
 	$match.text('')
 	$txt.text($txt.text())
 
-clean_past_data = (txt) ->
-	txt.replace(/<br[^>]+?>/ig, '\n')
-
 syntax_highlight = (exp, flags) ->
 	exp_escaped = exp.replace(/\\\//g, '/').replace(/\//g, '\\/')
 	$exp_dsp.text("/#{exp_escaped}/#{flags}")
@@ -262,14 +238,33 @@ syntax_highlight = (exp, flags) ->
 	exp = RegexColorizer.colorizeText(exp)
 	$exp.html(exp)
 
-create_match_list = (m) ->
+create_match_ol = (ms) ->
+	if not ms
+		return ''
+
 	list = '<ol start="0">'
-	if m
-		for i in m
-			es = escape_html(i)
-			list += "<li><span class='g'>#{es}</span></li>"
+
+	for i in ms
+		es = escape_html(i[0])
+		list += "<li><span class='g'>#{es}</span></li>"
+
 	list += '</ol>'
-	list
+
+create_match_table = (m) ->
+	if not m or not m.hasOwnProperty('index')
+		return ''
+
+	table = '<table>'
+
+	delete m.input
+	delete m.index
+
+	for k, v of m
+		es = escape_html(v)
+		table += "<tr><td class='text-right'>#{k}: </td>" +
+			"<td><span class='g'>#{es}</span></td></tr>"
+
+	table += '</table>'
 
 match_elem_show_tip = ->
 	$this = $(this)
@@ -277,13 +272,13 @@ match_elem_show_tip = ->
 	index = $this.attr('index')
 
 	# Create match list.
-	reg = new RegExp($exp.text(), $flags.val().replace('g', ''))
-	m = $this.text().match(reg)
+	r = XRegExp($exp.text(), $flags.val().replace('g', ''))
+	m = XRegExp.exec($this.text(), r, 0)
 
 	$this.popover({
 		html: true
 		title: 'Group: ' + index
-		content: create_match_list(m)
+		content: create_match_table(m)
 		placement: 'bottom'
 	}).popover('show')
 
@@ -328,7 +323,6 @@ window.apply_state = ->
 	$txt.text(data.txt)
 
 	run_match()
-
 
 `
 if (window.getSelection && document.createRange) {
