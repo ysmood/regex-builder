@@ -4,7 +4,7 @@
 		{
 			"file_exclude_patterns":
 			[
-				"peditor.sublime-project",
+				"regex-builder.sublime-project",
 				"*.ico",
 				"*.js",
 				"*.css"
