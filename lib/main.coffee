@@ -315,11 +315,15 @@ window.share_state = ->
 		flags: $flags.val()
 		txt: $txt.text()
 	}
+	json = JSON.stringify(data)
+	compressed = LZString.compressToBase64(json)
 
-	$('#share').val(JSON.stringify(data)).select()
+	$('#share').val(compressed).select()
 
 window.apply_state = ->
-	data = JSON.parse($('#share').val())
+	compressed = $('#share').val()
+	json = LZString.decompressFromBase64(compressed)
+	data = JSON.parse(json)
 	$exp.text(data.exp)
 	$flags.val(data.flags)
 	$txt.text(data.txt)
