@@ -81,10 +81,19 @@ init_hide_switches = ->
 		$this = $(this)
 		$tar = $('#' + $this.attr('target'))
 
-		if $this.prop('checked')
+		if $this.val() == 'on'
+			$this.val('off')
 			$tar.hide()
 		else
+			$this.val('on')
 			$tar.show()
+	)
+
+	$('.switch_hide').each(->
+		$this = $(this)
+		if $this.val() == 'off'
+			$this.val('on')
+			$this.click()
 	)
 
 on_window_resize = ->
@@ -263,7 +272,7 @@ create_match_table = (m) ->
 
 	for k, v of m
 		es = escape_html(v)
-		table += "<tr><td class='text-right'>#{k}: </td>" +
+		table += "<tr><td class='text-right strong'>#{k}: </td>" +
 			"<td><span class='g'>#{es}</span></td></tr>"
 
 	table += '</table>'
@@ -278,10 +287,11 @@ match_elem_show_tip = ->
 	m = XRegExp.exec($this.text(), r, 0)
 
 	$this.popover({
+		animation: false
 		html: true
-		title: 'Group: ' + index
+		title: 'Group : ' + index
 		content: create_match_table(m)
-		placement: 'bottom'
+		placement: 'auto'
 	}).popover('show')
 
 save_data = (e) ->

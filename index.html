@@ -56,7 +56,7 @@
 	<div class="group">
 		<label for='txt' title='Matched words are highlighted'>Visual</label>
 		<label class="pull-right">
-			<input type="checkbox" class="switch_hide" target="txt"> Hide
+			<input id="txt_hide_switch" type="checkbox" save='val' class="switch_hide" target="txt"> Hide
 		</label>
 		<pre id='txt' save='text' contenteditable='true' spellcheck='false'></pre>
 	</div>
@@ -64,7 +64,7 @@
 	<div class="group">
 		<label for='match' title='Result is json formated'>Match</label>
 		<label class="pull-right">
-			<input type="checkbox" class="switch_hide" target="match"> Hide
+			<input id="match_hide_switch" type="checkbox" save='val' class="switch_hide" target="match"> Hide
 		</label>
 		<div id='match'></div>
 	</div>
