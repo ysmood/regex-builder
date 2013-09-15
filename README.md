@@ -22,7 +22,7 @@ It is still under heavy development. Only tested on the Chrome, Safari and Firef
  - If you want to report a bug, please post with your state code by clicking the `Share` button, if it's possible.
  - If you want to use XRegExp's named groups, three names are reserved:
 
-        index, input, lastIndex
+        ___index, ___input, ___lastIndex
 
    This is due to a XRegExp bug, hope it can be fixed in future.
 

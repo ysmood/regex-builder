@@ -13,6 +13,11 @@ $txt = $('#txt')
 $match = $('#match')
 $flags = $('#flags')
 
+# To fix the bug of XRegExp.
+# The match object contains some extra properties that
+# may be overwrite by the by the group name.
+exp_escape_list = ['index', 'input', 'lastIndex']
+
 init = ->
 	# Local storage.
 	load_data()
@@ -171,18 +176,18 @@ run_match = ->
 	flags = $flags.val()
 	txt = $txt.text()
 
+	syntax_highlight(exp, flags)
 
 	if not exp
 		input_clear()
 		return
 
+	exp = escape_exp(exp)
 	try
 		r = XRegExp(exp, flags)
 	catch e
 		input_clear(e)
 		return
-
-	syntax_highlight(exp, flags)
 
 	# Store the match groups
 	ms = []
@@ -223,6 +228,21 @@ run_match = ->
 	if is_match_shown
 		list = create_match_ol(ms)
 		$match.html(list)
+
+escape_exp = (exp) ->
+	for i in exp_escape_list
+		exp = exp.replace(
+			new RegExp("\\(\\?<#{i}>", 'g')
+			"(?<___#{i}>"
+		)
+
+	exp
+
+unescape_exp = (name) ->
+	for i in exp_escape_list
+		if name == '___' + i
+			return name.slice(3)
+	name
 
 match_visual = (str, i, j, k, c) ->
 	# Escaping is important.
@@ -271,9 +291,10 @@ create_match_table = (m) ->
 	delete m.index
 
 	for k, v of m
-		es = escape_html(v)
-		table += "<tr><td class='text-right strong'>#{k}: </td>" +
-			"<td><span class='g'>#{es}</span></td></tr>"
+		es_k = unescape_exp(k)
+		es_v = escape_html(v)
+		table += "<tr><td class='text-right strong'>#{es_k}: </td>" +
+			"<td><span class='g'>#{es_v}</span></td></tr>"
 
 	table += '</table>'
 
@@ -283,7 +304,10 @@ match_elem_show_tip = ->
 	index = $this.attr('index')
 
 	# Create match list.
-	r = XRegExp($exp.text(), $flags.val().replace('g', ''))
+	r = XRegExp(
+		escape_exp($exp.text())
+		$flags.val().replace('g', '')
+	)
 	m = XRegExp.exec($this.text(), r, 0)
 
 	$this.popover({
@@ -412,3 +436,5 @@ if (window.getSelection && document.createRange) {
 `
 
 init()
+
+13554394073
