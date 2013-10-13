@@ -145,10 +145,10 @@ entityMap = {
 	"<": "&lt;"
 	">": "&gt;"
 }
-escape_exp = /[&<>]/g
+escape_html_exp = /[&<>]/g
 escape_html = (str) ->
-	return String(str).replace(
-		escape_exp,
+	return str.replace(
+		escape_html_exp,
 		(s) ->
 			return entityMap[s]
 	)
