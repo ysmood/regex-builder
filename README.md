@@ -2,7 +2,7 @@
 
 A tool for testing js regular expression.
 
-It is still under heavy development. Only tested on the Chrome, Safari and Firefox.
+Tested on the Chrome, Safari and Firefox.
 
 # Features
 
