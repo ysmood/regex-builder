@@ -20,7 +20,7 @@
     "build": "node_modules/.bin/bower install"
   },
   "dependencies": {
-    "bower": "~1.2.5",
+    "bower": "~1.2.7",
     "coffee-script": "~1.6.3",
     "stylus": "~0.36.1"
   }
