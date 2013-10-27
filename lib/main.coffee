@@ -436,5 +436,3 @@ if (window.getSelection && document.createRange) {
 `
 
 init()
-
-13554394073
