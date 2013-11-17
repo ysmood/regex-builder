@@ -56,6 +56,7 @@ init_key_events = ->
 
 	# Force to paste plain text.
 	$txt[0].addEventListener('paste', clean_paste_text)
+	$exp[0].addEventListener('paste', clean_paste_text)
 
 	$flags.keyup(delay_run_match)
 
