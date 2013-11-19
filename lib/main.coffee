@@ -148,6 +148,7 @@ entityMap = {
 }
 escape_html_exp = /[&<>]/g
 escape_html = (str) ->
+	return '' if not str
 	return str.replace(
 		escape_html_exp,
 		(s) ->
