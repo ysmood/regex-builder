@@ -174,7 +174,7 @@ run_match = ->
 	# Clear other tags.
 	$txt.find('div').remove()
 
-	exp = $exp.text().trim()
+	exp = $exp.text()
 	flags = $flags.val()
 	txt = $txt.text()
 
@@ -268,7 +268,7 @@ syntax_highlight = (exp, flags) ->
 	$exp_dsp.text("/#{exp_escaped}/#{flags}")
 
 	exp = RegexColorizer.colorizeText(exp)
-	$exp.html(exp)
+	$exp.html(exp + '<br>')
 	$exp.find('[title]').removeAttr('title')
 
 create_match_ol = (ms) ->
