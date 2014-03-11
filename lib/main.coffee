@@ -174,7 +174,7 @@ run_match = ->
 	# Clear other tags.
 	$txt.find('div').remove()
 
-	exp = $exp.text()
+	exp = $exp.text().trim()
 	flags = $flags.val()
 	txt = $txt.text()
 
