@@ -128,15 +128,15 @@ delay_run_match = ->
 
 # Generate tag for highlighting in turns.
 anchor_c = 0
-anchor = (index) ->
+anchor = (index, j, k) ->
 	c = anchor_c++ % 4
 	switch c
 		when 0
-			"<i index='#{index}'>"
+			"<i index='#{index}' pos='#{j} #{k}'>"
 		when 1
 			"</i>"
 		when 2
-			"<b index='#{index}'>"
+			"<b index='#{index}' pos='#{j} #{k}'>"
 		when 3
 			"</b>"
 
@@ -209,6 +209,9 @@ run_match = ->
 		if m[0].length == 0
 			pos++
 
+		if not r.global
+			break
+
 	if is_txt_shown
 		visual = ''
 		i = 0
@@ -249,7 +252,7 @@ unescape_exp = (name) ->
 match_visual = (str, i, j, k, c) ->
 	# Escaping is important.
 	escape_html(str.slice(i, j)) +
-	anchor(c) +
+	anchor(c, j, k - 1) +
 	escape_html(str.slice(j, k)) +
 	anchor()
 
@@ -304,6 +307,7 @@ match_elem_show_tip = ->
 	$this = $(this)
 
 	index = $this.attr('index')
+	[j, k] = $this.attr('pos').split(' ')
 
 	# Create match list.
 	r = XRegExp(
@@ -315,7 +319,8 @@ match_elem_show_tip = ->
 	$this.popover({
 		animation: false
 		html: true
-		title: 'Group : ' + index
+		title: "Group : <span class='text-primary'>#{index}</span>
+				Range: <span class='text-primary'>[#{j}, #{k}]</span>"
 		content: create_match_table(m)
 		placement: 'auto'
 	}).popover('show')
